@@ -18,31 +18,59 @@ const VU_STYLES = [
     'classic', 'led', 'circular', 'waveform', 'spectrum', 'retro'
 ];
 
-function initThemeSwitcher() {
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    if (!themeToggleBtn) return;
+/**
+ * Manages the application's theme (light/dark) for the standalone player.
+ */
+const StandaloneThemeManager = {
+    init() {
+        this.addThemeToggleButton();
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function applyTheme(isDark) {
-        if (isDark) {
-            document.documentElement.classList.add('dark-theme');
-            themeToggleBtn.textContent = '☀️';
+        if (savedTheme) {
+            this.setTheme(savedTheme);
         } else {
-            document.documentElement.classList.remove('dark-theme');
-            themeToggleBtn.textContent = '🌙';
+            this.setTheme(prefersDark ? 'dark-theme' : 'light-theme');
         }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) { // Only follow system if no theme is saved
+                this.setTheme(e.matches ? 'dark-theme' : 'light-theme');
+            }
+        });
+    },
+
+    setTheme(themeName) {
+        const isDark = themeName === 'dark-theme';
+        document.documentElement.classList.toggle('dark-theme', isDark);
+        localStorage.setItem('theme', themeName);
+        this.updateThemeIcon(isDark);
+    },
+
+    toggleTheme() {
+        const isDark = !document.documentElement.classList.contains('dark-theme');
+        this.setTheme(isDark ? 'dark-theme' : 'light-theme');
+    },
+
+    updateThemeIcon(isDark) {
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        if (themeBtn) {
+            themeBtn.textContent = isDark ? '☀️' : '🌙';
+        }
+    },
+
+    addThemeToggleButton() {
+        const header = document.querySelector('.tool-header');
+        if (!header || document.getElementById('theme-toggle-btn')) return;
+
+        const toggle = document.createElement('button');
+        toggle.id = 'theme-toggle-btn';
+        toggle.className = 'theme-btn';
+        header.appendChild(toggle);
+        toggle.addEventListener('click', () => this.toggleTheme());
     }
-
-    themeToggleBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.contains('dark-theme');
-        applyTheme(!isDark);
-    });
-
-    // Set initial theme
-    applyTheme(prefersDark.matches);
-    prefersDark.addEventListener('change', (e) => applyTheme(e.matches));
-}
+};
 
 function initRadioStreamPlayer() {
     const state = radioStreamState;
@@ -496,6 +524,10 @@ function initRadioStreamPlayer() {
             audio.pause();
             playPauseBtn.textContent = 'Play';
         } else {
+            // Resume AudioContext on user gesture
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
             audio.play().catch(err => {
                 console.error('Playback failed:', err);
                 nowPlaying.textContent = 'Error: Unable to play stream';
@@ -589,7 +621,7 @@ function initRadioStreamPlayer() {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('station-select')) {
-        initThemeSwitcher();
+        StandaloneThemeManager.init();
         initRadioStreamPlayer();
     }
 });
