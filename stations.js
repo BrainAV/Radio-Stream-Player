@@ -8,6 +8,6 @@ export const stations = [
     { name: "psyradio * fm - progressive", url: "http://65.109.32.21:8010/stream" },
     { name: "Party~Vibe | Psychedelic Trance Radio", url: "http://94.130.242.5:8010/stream3" },
     { name: "DI.FM - Vocal Trance", url: "https://listen.di.fm/vocaltrance" },
-    { name: "Radiozora - Psytrance", url: "https://radiozora.fm/stream/" },
+    { name: "Radiozora - Psytrance", url: "https://2026.radiozora.fm/stream/" },
     { name: "A State of Trance (ASOT)", url: "https://streaming.radio.co/s0cf4c8c63/listen" }
 ];
