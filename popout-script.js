@@ -1,72 +1,39 @@
-function initPopoutPlayer() {
-    const audio = new Audio();
-    const stationSelect = document.getElementById('station-select');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const volumeSlider = document.getElementById('volume-slider');
-    const nowPlaying = document.getElementById('now-playing');
-    let isPlaying = false;
+import { radioStreamState, initPlayer } from './player.js';
 
-    // Apply the theme from the URL parameter
+/**
+ * Initializes the pop-out player.
+ */
+function initPopoutPlayer() {
+    // 1. Get initial state from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const theme = urlParams.get('theme');
+    const initialStation = urlParams.get('station');
+
+    // 2. Apply the theme
     if (theme) {
-        document.documentElement.classList.add(theme);
+        document.documentElement.classList.add(`${theme}-theme`);
     }
 
-    // Set initial station from URL parameter
-    const initialStation = urlParams.get('station') || stationSelect.value;
-    stationSelect.value = initialStation;
-    audio.src = initialStation;
-    audio.volume = volumeSlider.value;
-    audio.crossOrigin = 'anonymous';
+    // 3. Set the initial state for the player module
+    // We set isPlaying to true so it starts playing immediately.
+    radioStreamState.currentStation = initialStation;
+    radioStreamState.isPlaying = true;
 
-    // Update now-playing display
-    function updateNowPlaying() {
-        const stationName = stationSelect.options[stationSelect.selectedIndex].text;
-        nowPlaying.textContent = `Now Playing: ${stationName}`;
-    }
+    // 4. Initialize the shared player logic
+    // This will populate stations, set up event listeners, and play the audio.
+    initPlayer(radioStreamState);
 
-    // Play/Pause toggle
-    playPauseBtn.addEventListener('click', () => {
-        if (isPlaying) {
-            audio.pause();
-            playPauseBtn.textContent = 'Play';
-        } else {
-            audio.play().catch(err => {
-                console.error('Playback failed:', err);
-                nowPlaying.textContent = 'Error: Unable to play stream';
-            });
-            playPauseBtn.textContent = 'Pause';
-        }
-        isPlaying = !isPlaying;
-    });
-
-    // Station change
-    stationSelect.addEventListener('change', () => {
-        audio.src = stationSelect.value;
-        updateNowPlaying();
-        if (isPlaying) {
-            audio.play().catch(err => {
-                console.error('Playback failed:', err);
-                nowPlaying.textContent = 'Error: Unable to play stream';
-            });
-        }
-    });
-
-    // Volume control
-    volumeSlider.addEventListener('input', () => {
-        audio.volume = volumeSlider.value;
-    });
-
-    // Update now-playing on load
-    updateNowPlaying();
-
-    // Notify main window when pop-out is closed
+    // 5. Notify the main window when this pop-out is closed
     window.addEventListener('beforeunload', () => {
-        if (window.opener) {
-            window.opener.postMessage({ type: 'popoutClosed' }, '*');
+        // This message is caught by the main window to restore its UI.
+        if (window.opener && !window.opener.closed) {
+            try {
+                window.opener.postMessage({ type: 'popoutClosed' }, '*');
+            } catch (e) {
+                console.error("Could not send message to opener window.", e);
+            }
         }
     });
 }
 
-initPopoutPlayer();
+document.addEventListener('DOMContentLoaded', initPopoutPlayer);

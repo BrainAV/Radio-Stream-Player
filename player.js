@@ -89,43 +89,63 @@ export function initPlayer(state) {
         state.volume = audio.volume;
     });
 
-    popoutBtn.addEventListener('click', () => {
-        if (state.popoutWindow && !state.popoutWindow.closed) {
-            state.popoutWindow.focus();
-            return;
-        }
-
-        if (state.isPlaying) {
-            audio.pause();
-            state.isPlaying = false;
-            playPauseBtn.textContent = 'Play';
-        }
-
-        const isDark = document.documentElement.classList.contains('dark-theme');
-        const popoutUrl = `popout.html?station=${encodeURIComponent(stationSelect.value)}&theme=${isDark ? 'dark' : 'light'}`;
-        state.popoutWindow = window.open(popoutUrl, 'RadioStreamPopout', 'width=300,height=278');
-
-        document.querySelector('.radiostream-player .player-content').style.display = 'none';
-        if (popoutNotice) popoutNotice.style.display = 'block';
-    });
-
-    window.addEventListener('message', (event) => {
-        if (event.data.type === 'popoutClosed') {
-            document.querySelector('.radiostream-player .player-content').style.display = 'flex';
-            if (popoutNotice) popoutNotice.style.display = 'none';
-
-            state.popoutWindow = null;
-            if (state.isPlaying) {
-                audio.play().catch(err => {
-                    console.error('Playback failed:', err);
-                    nowPlaying.textContent = 'Error: Unable to play stream';
-                });
-                playPauseBtn.textContent = 'Pause';
+    // Only add popout logic if the button exists (it won't in the popout itself)
+    if (popoutBtn) {
+        popoutBtn.addEventListener('click', () => {
+            if (state.popoutWindow && !state.popoutWindow.closed) {
+                state.popoutWindow.focus();
+                return;
             }
-        }
-    });
+    
+            if (state.isPlaying) {
+                audio.pause();
+                state.isPlaying = false;
+                playPauseBtn.textContent = 'Play';
+            }
+    
+            const themeClass = document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light';
+            const popoutUrl = `popout.html?station=${encodeURIComponent(stationSelect.value)}&theme=${themeClass}`;
+            state.popoutWindow = window.open(popoutUrl, 'RadioStreamPopout', 'width=300,height=278');
+    
+            // Hide main player and show notice
+            document.querySelector('.radiostream-player .player-content').style.display = 'none';
+            if (popoutNotice) popoutNotice.style.display = 'block';
+    
+            // Robustly check if the popout window has been closed
+            const popoutCheckInterval = setInterval(() => {
+                if (state.popoutWindow && state.popoutWindow.closed) {
+                    clearInterval(popoutCheckInterval);
+                    // Manually trigger the close logic in case the message event fails
+                    handlePopoutClose();
+                }
+            }, 500); // Check every 500ms
+        });
+    
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'popoutClosed') {
+                handlePopoutClose();
+            }
+        });
+    }
 
     window.addEventListener('beforeunload', cleanup);
+
+    function handlePopoutClose() {
+        // Ensure this only runs once
+        if (!state.popoutWindow && !window.opener) return;
+
+        document.querySelector('.radiostream-player .player-content').style.display = 'flex';
+        if (popoutNotice) popoutNotice.style.display = 'none';
+
+        state.popoutWindow = null;
+        if (state.isPlaying) {
+            audio.play().catch(err => {
+                console.error('Playback failed:', err);
+                nowPlaying.textContent = 'Error: Unable to play stream';
+            });
+            playPauseBtn.textContent = 'Pause';
+        }
+    }
 
     function updateNowPlaying() {
         const stationName = stationSelect.options[stationSelect.selectedIndex].text;

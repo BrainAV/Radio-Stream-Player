@@ -14,11 +14,11 @@ This document outlines the future direction and planned features for the Radio S
     -   Add `aria-label` attributes to all interactive controls (buttons, sliders) for better screen reader support.
     -   Ensure full keyboard navigability for all player functions.
     -   Implement focus-visible states for better keyboard navigation feedback.
--   **[ ] UI/UX Improvements:**
+-   **[x] UI/UX Improvements:**
     -   **[x]** Add a visual indicator or tooltip to the "Cycle VU Meter" button to show the name of the current style.
-    -   Improve the pop-out window closing mechanism to be more robust.
--   **[ ] Content:**
-    -   Add more high-quality radio streams to the default list.
+    -   **[x]** Improve the pop-out window closing mechanism to be more robust.
+-   **[x] Content:**
+    -   **[x]** Add more high-quality radio streams to the default list.
 
 ---
 

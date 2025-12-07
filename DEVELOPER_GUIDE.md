@@ -113,13 +113,13 @@ export const stations = [
 
 Follow these steps to add a new visualization style (e.g., "neon").
 
-1.  **`script.js` - Register the Style**: Add your new style name to the `VU_STYLES` array.
+1.  **`visualizer.js` - Register the Style**: Add your new style name to the `VU_STYLES` array at the top of the file.
     ```javascript
     const VU_STYLES = ['classic', 'led', /*...*/, 'retro', 'neon'];
     ```
-2.  **`script.js` - Create Setup Function**: Create a function `createNeonVu(container, channel)` that builds the initial HTML/SVG/Canvas structure for one channel of your new meter. Add a call to it in the `updateVuStyle` function's `switch` statement.
-3.  **`script.js` - Create Update Function**: Create a function `updateNeonVu(levelLeft, levelRight)` that updates your meter's visuals based on the audio data. Add a call to it in the `updateVUMeters` function's `switch` statement.
-4.  **`script.js` - Create Reset Function** (Optional): If your meter needs to be reset to a zero state when paused, add logic to the `resetVuMeters` function.
+2.  **`visualizer.js` - Create Setup Function**: Create a function `createNeonVu(container, channel)` that builds the initial HTML/SVG/Canvas structure for one channel of your new meter. Add a call to it in the `updateVuStyle` function's `switch` statement.
+3.  **`visualizer.js` - Create Update Function**: Create a function `updateNeonVu(levelLeft, levelRight)` that updates your meter's visuals based on the audio data. Add a call to it in the `updateVUMeters` function's `switch` statement.
+4.  **`visualizer.js` - Create Reset Function** (Optional): If your meter needs to be reset to a zero state when paused, add logic to the `resetVuMeters` function.
 5.  **`styles.css` - Add Styling**: Add the necessary CSS rules to style your new meter. Use a class selector based on the style name (e.g., `.vu-meters.vu-neon`).
 
 ---

@@ -6,5 +6,8 @@ export const stations = [
     { name: "Psychedelic FM", url: "https://s2.radio.co/s2696f08b5/listen" },
     { name: "Melodic House Radio", url: "https://stream1-technolovers.radiohost.de/melodic-house-techno" },
     { name: "psyradio * fm - progressive", url: "http://65.109.32.21:8010/stream" },
-    { name: "Party~Vibe | Psychedelic Trance Radio", url: "http://94.130.242.5:8010/stream3" }
+    { name: "Party~Vibe | Psychedelic Trance Radio", url: "http://94.130.242.5:8010/stream3" },
+    { name: "DI.FM - Vocal Trance", url: "https://listen.di.fm/vocaltrance" },
+    { name: "Radiozora - Psytrance", url: "https://radiozora.fm/stream/" },
+    { name: "A State of Trance (ASOT)", url: "https://streaming.radio.co/s0cf4c8c63/listen" }
 ];

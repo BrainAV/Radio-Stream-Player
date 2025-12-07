@@ -18,8 +18,9 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
   - Retro (Analog Needle)
 - **Light & Dark Themes**: Automatically detects the user's system preference and allows manual toggling.
 - **Pop-out Player**: Open the player in a separate, compact window for easy multitasking.
+- **Accessible**: Built with accessibility in mind, featuring screen reader support and full keyboard navigation.
 - **Responsive Design**: Looks and works great on both desktop and mobile devices.
-- **State Persistence**: Remembers your volume, current station, and playback status across sessions (within the main app context).
+- **Session-Aware**: Remembers your selected theme across browser sessions using `localStorage`. Volume and station are maintained within the current session, including when using the pop-out player.
 
 ## 🛠️ Technologies Used
 

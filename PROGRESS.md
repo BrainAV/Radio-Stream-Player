@@ -50,3 +50,7 @@ This version focused on improving the codebase architecture and enhancing access
 
 ### UI/UX Improvements
 -   **VU Meter Tooltip:** The VU meter style-cycle button now has a dynamic tooltip that displays the name of the current style (e.g., "Style: Classic").
+-   **Robust Pop-out Player:** The pop-out player logic was refactored to reuse the main player module, and the closing mechanism was made more reliable with a polling fallback.
+
+### Content
+-   **Expanded Station List:** Added several new high-quality Trance and Psytrance radio streams to the default list.
