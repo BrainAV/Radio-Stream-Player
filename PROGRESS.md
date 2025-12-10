@@ -1,56 +1,39 @@
-# Project Progress & Milestones
+# Changelog
 
-This document tracks the major features and milestones completed during the development of the Radio Stream Player.
+All notable changes to this project will be documented in this file.
 
----
-
-## ✅ Version 1.0 (Initial Release)
-
-*Date: [Your Release Date Here]*
-
-This version represents the foundational release of the player, including all core features for a complete user experience.
-
-### Core Player Functionality
--   **Audio Playback:** Implemented robust audio streaming using the HTML5 `<audio>` element.
--   **Player Controls:** Created essential controls for Play/Pause and Volume adjustment.
--   **Station Management:** Built a station selector with a pre-populated list of high-quality streams.
--   **State Persistence:** The player now remembers the user's last selected station, volume, and playback status within the main application context.
-
-### Audio Visualization Engine
--   **Web Audio API Integration:** Successfully set up the Web Audio API graph to analyze audio in real-time without affecting playback.
--   **Multi-Style Visualizer:** Developed a dynamic engine capable of switching between different VU meter styles.
--   **Implemented Visualizers (6):**
-    -   `Classic`: Traditional vertical bars.
-    -   `LED`: Segmented digital display.
-    -   `Circular`: Radial progress indicator.
-    -   `Waveform`: Oscilloscope-style time-domain view.
-    -   `Spectrum`: Frequency-based spectrum analyzer.
-    -   `Retro`: Analog needle-style meter.
-
-### User Interface & Experience
--   **Modern UI:** Designed a sleek, responsive, and intuitive user interface.
--   **Theming:** Implemented Light and Dark themes with automatic detection of user's system preference and a manual toggle.
--   **Pop-out Player:** Added a feature to launch the player in a separate, compact window for easy multitasking.
--   **Documentation:** Created a comprehensive `README.md` for users and a `DEVELOPER_GUIDE.md` for contributors.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## ✅ Version 1.1 (Refactoring & Accessibility)
+## [1.1.1] - 2025-12-10
 
-*Date: [Your Current Date Here]*
+### Changed
+-   **UI/UX:** Redesigned the header to be more compact, reducing its vertical height to save screen space.
 
-This version focused on improving the codebase architecture and enhancing accessibility, setting a strong foundation for future features.
+---
 
-### Code Quality
--   **Code Refactoring:** Modularized the monolithic `script.js` into three distinct files: `player.js` (core logic), `visualizer.js` (audio analysis and drawing), and `stations.js` (data). This greatly improves maintainability.
+## [1.1.0] - 2025-12-09
 
-### Accessibility (A11y)
--   **Screen Reader Support:** Added `aria-label` attributes to all icon-only buttons and interactive controls.
--   **Keyboard Navigation:** Implemented `:focus-visible` CSS states to provide clear visual outlines for keyboard users without cluttering the UI for mouse users.
+### Added
+-   **Accessibility:** Added `aria-label` attributes to all icon-only buttons for screen reader support.
+-   **Accessibility:** Implemented `:focus-visible` CSS states for clear keyboard navigation outlines.
+-   **UI/UX:** The VU meter style-cycle button now has a dynamic tooltip that displays the name of the current style.
+-   **Content:** Added several new high-quality Trance and Psytrance radio streams.
 
-### UI/UX Improvements
--   **VU Meter Tooltip:** The VU meter style-cycle button now has a dynamic tooltip that displays the name of the current style (e.g., "Style: Classic").
--   **Robust Pop-out Player:** The pop-out player logic was refactored to reuse the main player module, and the closing mechanism was made more reliable with a polling fallback.
+### Changed
+-   **Code Refactoring:** Modularized the monolithic `script.js` into `player.js`, `visualizer.js`, and `stations.js` to improve maintainability.
+-   **Pop-out Player:** Refactored the pop-out player logic to reuse the main player module and made the closing mechanism more reliable with a polling fallback.
 
-### Content
--   **Expanded Station List:** Added several new high-quality Trance and Psytrance radio streams to the default list.
+---
+
+## [1.0.0] - 2025-12-07
+
+### Added
+-   **Core Player:** Audio playback, volume controls, and station selector.
+-   **State Management:** Remembers last station and volume.
+-   **Visualizer Engine:** Real-time audio analysis with 6 initial styles (Classic, LED, Circular, Waveform, Spectrum, Retro).
+-   **UI/UX:** Light/Dark themes with auto-detection.
+-   **Pop-out Player:** Ability to launch the player in a compact, separate window.
+-   **Documentation:** Initial `README.md` and `DEVELOPER_GUIDE.md`.

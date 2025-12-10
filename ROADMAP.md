@@ -26,6 +26,8 @@ This document outlines the future direction and planned features for the Radio S
 
 *These goals focus on adding significant new user-facing features.*
 
+-   **[ ] UI/UX Enhancements:**
+    -   **[x]** Redesign the header to reduce its vertical height, improving usability on smaller screens and mobile devices.
 -   **[ ] Custom Stations:**
     -   Implement a feature allowing users to add their own radio stream URLs.
     -   Use `localStorage` to save user-added stations so they persist between sessions.

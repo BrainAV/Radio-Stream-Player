@@ -47,6 +47,37 @@ window.radioStreamState = radioStreamState;
 - **Purpose**: It acts as a singleton, holding all critical application state like the current station, volume, playback status, and references to the `AudioContext` and its nodes.
 - **Limitation**: This is a simple approach. For larger applications, this could become difficult to manage. Future work could involve refactoring this into a more robust state management pattern (e.g., a class-based service or a pub/sub model).
 
+### 3.1.1. Future Refactoring Plan: Class-Based State Service
+
+To address the limitations of the global state object and align with the long-term roadmap, the state management will be upgraded to a class-based service. This will improve encapsulation, scalability, and maintainability.
+
+**Key Concepts:**
+
+1.  **Encapsulation**: The state will be held privately within a `StateManager` class. Direct mutation from outside the class will be prevented.
+2.  **Controlled Mutations**: The class will expose public methods (e.g., `setPlaying(status)`, `setVolume(level)`) as the only way to modify the state. This creates a single, predictable source of truth for state changes.
+3.  **Reactivity (Pub/Sub)**: The `StateManager` will implement a simple publish-subscribe pattern.
+    -   A `subscribe(callback)` method will allow different modules (like the UI) to listen for state changes.
+    -   When the state is modified via a setter method, a private `notify()` method will be called, which in turn executes all registered subscriber callbacks.
+
+**Implementation Steps:**
+
+1.  **Create `state.js`**: A new file will house the `StateManager` class. A single, shared instance (singleton) of this class will be created and exported.
+
+    ```javascript
+    // Example structure for state.js
+    class StateManager {
+        #state;
+        #subscribers;
+        // ... constructor, getters, setters, subscribe, notify
+    }
+    export const stateManager = new StateManager({ /* initial state */ });
+    ```
+
+2.  **Refactor Modules**:
+    -   In `player.js`, `visualizer.js`, and `script.js`, replace the import and use of the global `radioStreamState` with the new `stateManager` instance.
+    -   Update code that directly modifies state (e.g., `state.isPlaying = true`) to use the new setter methods (e.g., `stateManager.setPlaying(true)`).
+    -   Refactor UI update logic. Instead of manually updating the DOM after every action, the UI components will `subscribe` to the `stateManager`. The subscription callback will receive the new state and update the DOM accordingly, ensuring the UI is always in sync with the state.
+
 ### 3.2. Web Audio API Graph
 
 The audio visualization is powered by the Web Audio API. The audio signal flows through a series of connected nodes, all of which are created and managed within `visualizer.js`.
