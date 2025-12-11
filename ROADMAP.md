@@ -28,6 +28,12 @@ This document outlines the future direction and planned features for the Radio S
 
 -   **[ ] UI/UX Enhancements:**
     -   **[x]** Redesign the header to reduce its vertical height, improving usability on smaller screens and mobile devices.
+    -   **[ ]** Modernize the player's look and feel with an updated visual design:
+        -   **[x]** Implement a "Glassmorphism" (frosted glass) effect for the main player card.
+        -   **[x]** Replace text-based controls (Play/Pause, Pop-out) with modern SVG icons.
+        -   **[x]** Redesign the volume slider for a more modern appearance.
+        -   **[x]** Re-organize player controls into a more compact, horizontal layout.
+        -   **[x]** Apply the modern look and feel to the pop-out player for a consistent UX.
 -   **[ ] Custom Stations:**
     -   Implement a feature allowing users to add their own radio stream URLs.
     -   Use `localStorage` to save user-added stations so they persist between sessions.

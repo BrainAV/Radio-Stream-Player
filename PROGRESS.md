@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 -   **UI/UX:** Redesigned the header to be more compact, reducing its vertical height to save screen space.
+-   **UI/UX:** Implemented a "Glassmorphism" (frosted glass) effect for the main player card and header for a more modern look.
+-   **UI/UX:** Replaced text-based "Play/Pause" and "Pop-out" buttons with clean SVG icons.
+-   **UI/UX:** Redesigned the volume slider with a dynamic "fill" track and updated thumb for a more modern appearance.
+-   **UI/UX:** Re-organized player controls into a compact, horizontal layout for a sleeker appearance.
+-   **UI/UX:** Applied the modern "Glassmorphism" design and horizontal control layout to the pop-out player for a consistent user experience.
 
 ---
 

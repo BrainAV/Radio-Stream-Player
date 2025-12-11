@@ -42,6 +42,19 @@ export function initPlayer(state) {
         state.source.connect(state.audioContext.destination);
     }
 
+    function updatePlayPauseIcon(isPlaying) {
+        const playIcon = playPauseBtn.querySelector('.icon-play');
+        const pauseIcon = playPauseBtn.querySelector('.icon-pause');
+        playIcon.style.display = isPlaying ? 'none' : 'block';
+        pauseIcon.style.display = isPlaying ? 'block' : 'none';
+    }
+
+    function updateVolumeSliderTrack(value) {
+        const progress = value * 100;
+        const bg = `linear-gradient(to right, var(--primary-color) ${progress}%, var(--border-color) ${progress}%)`;
+        volumeSlider.style.background = bg;
+    }
+
     const { audio, audioContext } = state;
 
     // Initial State
@@ -51,7 +64,8 @@ export function initPlayer(state) {
         stationSelect.value = state.currentStation;
     }
     volumeSlider.value = audio.volume;
-    playPauseBtn.textContent = state.isPlaying ? 'Pause' : 'Play';
+    updateVolumeSliderTrack(audio.volume); // Set initial track color
+    updatePlayPauseIcon(state.isPlaying);
     updateNowPlaying();
 
     // Event Listeners
@@ -68,7 +82,7 @@ export function initPlayer(state) {
             });
         }
         state.isPlaying = !state.isPlaying;
-        playPauseBtn.textContent = state.isPlaying ? 'Pause' : 'Play';
+        updatePlayPauseIcon(state.isPlaying);
         updateNowPlaying();
     });
 
@@ -87,6 +101,7 @@ export function initPlayer(state) {
     volumeSlider.addEventListener('input', () => {
         audio.volume = volumeSlider.value;
         state.volume = audio.volume;
+        updateVolumeSliderTrack(audio.volume);
     });
 
     // Only add popout logic if the button exists (it won't in the popout itself)
@@ -100,7 +115,7 @@ export function initPlayer(state) {
             if (state.isPlaying) {
                 audio.pause();
                 state.isPlaying = false;
-                playPauseBtn.textContent = 'Play';
+                updatePlayPauseIcon(false);
             }
     
             const themeClass = document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light';
@@ -143,7 +158,7 @@ export function initPlayer(state) {
                 console.error('Playback failed:', err);
                 nowPlaying.textContent = 'Error: Unable to play stream';
             });
-            playPauseBtn.textContent = 'Pause';
+            updatePlayPauseIcon(true);
         }
     }
 

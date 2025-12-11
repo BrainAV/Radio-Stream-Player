@@ -19,19 +19,26 @@
                 <div class="vu-meter" id="right-vu"></div>
             </div>
             <div class="player-content">
-                <div class="station-selector">
-                    <label for="station-select">Select Station:</label>
-                    <select id="station-select"></select>
-                </div>
-                <div class="player-controls">
-                    <button class="console-btn" id="play-pause-btn" aria-label="Play or pause audio stream">Play</button>
-                    <button class="console-btn" id="popout-btn" aria-label="Open player in a new pop-out window">Pop-out Player</button>
+                <div class="now-playing" id="now-playing">Now Playing: ETN-FM Trance</div>
+                <div class="control-bar">
+                    <div class="station-selector">
+                        <select id="station-select" aria-label="Select Station"></select>
+                    </div>
+                    <button class="console-btn" id="play-pause-btn" aria-label="Play or pause audio stream">
+                        <svg class="icon icon-play" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg class="icon icon-pause" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
                     <div class="volume-control">
-                        <label for="volume-slider">Volume:</label>
                         <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume control">
                     </div>
+                    <button class="console-btn" id="popout-btn" aria-label="Open player in a new pop-out window">
+                        <svg class="icon icon-popout" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                    </button>
                 </div>
-                <div class="now-playing" id="now-playing">Now Playing: ETN-FM Trance</div>
                 <div class="popout-notice" id="popout-notice" style="display: none;">
                     Player is running in a pop-out window.
                 </div>
