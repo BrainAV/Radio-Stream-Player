@@ -1,5 +1,5 @@
-const VU_STYLES = [
-    'classic', 'led', 'circular', 'waveform', 'spectrum', 'retro'
+export const VU_STYLES = [
+    'classic', 'led', 'circular', 'waveform', 'spectrum', 'retro', 'neon'
 ];
 
 let state;
@@ -37,40 +37,28 @@ export function initVisualizer(appState, audioContext, source) {
     frequencyDataLeft = new Uint8Array(bufferLength);
     frequencyDataRight = new Uint8Array(bufferLength);
 
-    // Create UI
-    createVuStyleButton();
+    // Load saved style preference
+    const savedStyle = localStorage.getItem('vuStyle');
+    if (savedStyle !== null) {
+        state.vuStyle = parseInt(savedStyle, 10);
+    }
 
     // Initial setup
     updateVuStyle();
     updateVUMeters();
 }
 
-function createVuStyleButton() {
-    if (document.getElementById('vu-style-btn')) return;
-
-    const vuStyleBtn = document.createElement('button');
-    vuStyleBtn.id = 'vu-style-btn';
-    vuStyleBtn.className = 'vu-style-btn';
-    vuStyleBtn.innerHTML = '◉';
-    vuStyleBtn.title = 'Cycle VU Meter Style';
-    vuStyleBtn.setAttribute('aria-label', 'Cycle VU Meter Style');
-    vuMeters.appendChild(vuStyleBtn);
-
-    vuStyleBtn.addEventListener('click', () => {
-        state.vuStyle = (state.vuStyle + 1) % VU_STYLES.length;
+export function setVuStyle(index) {
+    if (state && index >= 0 && index < VU_STYLES.length) {
+        state.vuStyle = index;
+        localStorage.setItem('vuStyle', index);
         updateVuStyle();
-    });
+    }
 }
 
 function updateVuStyle() {
-    const vuStyleBtn = document.getElementById('vu-style-btn');
     const currentStyle = VU_STYLES[state.vuStyle];
     vuMeters.className = `vu-meters vu-${currentStyle}`;
-
-    if (vuStyleBtn) {
-        const styleName = currentStyle.charAt(0).toUpperCase() + currentStyle.slice(1);
-        vuStyleBtn.title = `Style: ${styleName}`;
-    }
 
     // Clear existing content and rebuild based on style
     leftVu.innerHTML = '';
@@ -101,6 +89,10 @@ function updateVuStyle() {
             createRetroVu(leftVu, 'left');
             createRetroVu(rightVu, 'right');
             break;
+        case 'neon':
+            createNeonVu(leftVu, 'left');
+            createNeonVu(rightVu, 'right');
+            break;
     }
 }
 
@@ -126,15 +118,17 @@ function createLedVu(container, channel) {
 function createCircularVu(container, channel) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 34 34');
+    svg.setAttribute('width', '30');
+    svg.setAttribute('height', '30');
     
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', '17');
     circle.setAttribute('cy', '17');
     circle.setAttribute('r', '13');
     circle.setAttribute('fill', 'none');
-    circle.setAttribute('stroke', '#333');
+    circle.setAttribute('stroke', 'currentColor');
     circle.setAttribute('stroke-width', '2');
-    circle.setAttribute('opacity', '0.3');
+    circle.setAttribute('stroke-opacity', '0.2');
     
     const levelCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     levelCircle.setAttribute('cx', '17');
@@ -148,7 +142,7 @@ function createCircularVu(container, channel) {
     levelCircle.setAttribute('stroke-dashoffset', '81.68');
     levelCircle.setAttribute('transform', 'rotate(-90 17 17)');
     levelCircle.id = `${channel}-circular-level`;
-    levelCircle.className = 'circular-level';
+    levelCircle.setAttribute('class', 'circular-level');
     
     svg.appendChild(circle);
     svg.appendChild(levelCircle);
@@ -188,6 +182,13 @@ function createRetroVu(container, channel) {
     container.appendChild(retro);
 }
 
+function createNeonVu(container, channel) {
+    const level = document.createElement('div');
+    level.className = 'neon-level';
+    level.id = `${channel}-neon-level`;
+    container.appendChild(level);
+}
+
 function updateVUMeters() {
     state.animationFrameId = requestAnimationFrame(updateVUMeters);
 
@@ -212,6 +213,7 @@ function updateVUMeters() {
         case 'waveform': updateWaveformVu(); break;
         case 'spectrum': updateSpectrumVu(); break;
         case 'retro': updateRetroVu(levelLeft, levelRight); break;
+        case 'neon': updateNeonVu(levelLeft, levelRight); break;
     }
 }
 
@@ -231,16 +233,22 @@ function getLevelColor(level) {
 }
 
 function updateClassicVu(levelLeft, levelRight) {
-    const leftLevel = document.getElementById('left-vu-level');
-    const rightLevel = document.getElementById('right-vu-level');
-    if (leftLevel) {
-        leftLevel.style.height = `${levelLeft}%`;
-        leftLevel.style.background = getLevelColor(levelLeft);
-    }
-    if (rightLevel) {
-        rightLevel.style.height = `${levelRight}%`;
-        rightLevel.style.background = getLevelColor(levelRight);
-    }
+    const isMobile = window.innerWidth <= 500;
+
+    const updateChannel = (id, level) => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (isMobile) {
+                el.style.width = `${level}%`;
+            } else {
+                el.style.height = `${level}%`;
+            }
+            el.style.background = getLevelColor(level);
+        }
+    };
+
+    updateChannel('left-vu-level', levelLeft);
+    updateChannel('right-vu-level', levelRight);
 }
 
 function updateLedVu(levelLeft, levelRight) {
@@ -342,12 +350,36 @@ function updateRetroChannel(container, level) {
     }
 }
 
+function updateNeonVu(levelLeft, levelRight) {
+    const isMobile = window.innerWidth <= 500;
+    const updateChannel = (id, level) => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (isMobile) {
+                el.style.width = `${level}%`;
+            } else {
+                el.style.height = `${level}%`;
+            }
+            const color = getLevelColor(level);
+            el.style.background = color;
+            el.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+        }
+    };
+    updateChannel('left-neon-level', levelLeft);
+    updateChannel('right-neon-level', levelRight);
+}
+
 function resetVuMeters() {
+    const isMobile = window.innerWidth <= 500;
     const currentStyle = VU_STYLES[state.vuStyle];
     switch (currentStyle) {
         case 'classic':
             document.querySelectorAll('.vu-level').forEach(level => {
-                level.style.height = '0%';
+                if (isMobile) {
+                    level.style.width = '0%';
+                } else {
+                    level.style.height = '0%';
+                }
                 level.style.background = '#00ff00';
             });
             break;
@@ -364,6 +396,16 @@ function resetVuMeters() {
             document.querySelectorAll('.retro-needle').forEach(needle => {
                 needle.style.transform = 'rotate(-45deg)';
                 needle.style.borderColor = '#00ff00';
+            });
+            break;
+        case 'neon':
+            document.querySelectorAll('.neon-level').forEach(level => {
+                if (isMobile) {
+                    level.style.width = '0%';
+                } else {
+                    level.style.height = '0%';
+                }
+                level.style.boxShadow = 'none';
             });
             break;
     }

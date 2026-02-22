@@ -1,4 +1,4 @@
-# Changelog
+Please update the `CHANGELOG.md` to reflect the recent changes we've made.# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [Unreleased]
+
+### Added
+-   **Visualizer:** Added a new "Neon" VU meter style with a glowing effect.
+-   **Metadata:** Implemented Media Session API support. The player now displays station information (Name, Genre, Country) on the OS lock screen and media controls, and supports hardware media keys (Play/Pause/Next/Prev).
+
+### Fixed
+-   **Visualizer:** Fixed an issue where the "Circular" VU meter was not displaying correctly due to incorrect CSS selectors and SVG class assignment.
+-   **Mobile:** Fixed "Classic" and "Neon" VU meters not animating correctly on mobile devices (animating width instead of height).
 
 ### Documentation
 -   **Roadmap:** Updated the "Backend Service" goal to specifically target a Cloudflare Worker solution for handling HTTP streams on HTTPS sites.

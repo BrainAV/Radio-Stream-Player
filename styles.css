@@ -153,32 +153,6 @@ body.popout-body {
     position: relative;
 }
 
-/* VU Style Cycle Button */
-.vu-style-btn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    font-size: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    z-index: 10;
-    transition: all 0.2s ease;
-}
-
-.vu-style-btn:hover {
-    background: var(--primary-hover);
-    transform: scale(1.1);
-}
-
 /* Base VU Meter Styles */
 .vu-meter {
     background: var(--console-bg);
@@ -245,9 +219,10 @@ body.popout-body {
     justify-content: center;
     overflow: hidden;
     position: relative;
+    color: var(--text-color);
 }
 
-.vu-circular .vu-meters {
+.vu-meters.vu-circular {
     width: 80px;
     gap: 10px;
 }
@@ -373,11 +348,33 @@ body.popout-body {
     border-radius: 50%;
 }
 
+/* Neon VU Style */
+.vu-neon .vu-meter {
+    width: 25px;
+    background: #000; /* Deep black for contrast */
+    border: 1px solid #333;
+    box-shadow: inset 0 0 10px #000;
+}
+
+.neon-level {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+    /* Box shadow is set dynamically in JS */
+}
+
 .player-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.station-selector {
+    display: flex;
+    gap: 8px;
 }
 
 .station-selector label {
@@ -519,6 +516,19 @@ body.popout-body {
     padding: 10px; /* Make the play/pause button square */
 }
 
+/* Favorite Button */
+#favorite-btn {
+    padding: 10px;
+    background-color: var(--console-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+#favorite-btn.active {
+    color: #fbbf24; /* Amber/Gold color */
+    border-color: #fbbf24;
+}
+
 /* Adjustments for pop-out player */
 .popout-player .now-playing {
     font-size: 0.9em;
@@ -595,7 +605,7 @@ body.popout-body {
     }
 
     /* Mobile Circular Style */
-    .vu-circular .vu-meters {
+    .vu-meters.vu-circular {
         width: 100%;
         gap: 30px;
         justify-content: center;
@@ -656,6 +666,19 @@ body.popout-body {
         height: 20px;
     }
 
+    /* Mobile Neon Style */
+    .vu-neon .vu-meter {
+        width: 60px;
+        height: 20px;
+    }
+
+    .vu-neon .neon-level {
+        height: 100%;
+        width: 0%;
+        bottom: auto;
+        left: 0;
+    }
+
     .station-selector label,
     .volume-control label {
         font-size: 1em;
@@ -663,14 +686,6 @@ body.popout-body {
 
     .now-playing {
         font-size: 1em;
-    }
-
-    .vu-style-btn {
-        top: -10px;
-        right: -10px;
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
     }
 }
 
@@ -696,10 +711,6 @@ body.popout-body {
     transition: all 0.3s ease;
 }
 
-.vu-style-btn {
-    animation: pulse 2s infinite;
-}
-
 @keyframes pulse {
     0% { box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     50% { box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); }
@@ -707,11 +718,6 @@ body.popout-body {
 }
 
 /* Hover effects */
-.vu-meters:hover .vu-style-btn {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
 .vu-circular svg:hover .circular-level {
     stroke-width: 10;
 }
@@ -725,7 +731,6 @@ body.popout-body {
 /* Add a visible outline for keyboard users */
 .console-btn:focus-visible,
 .theme-btn:focus-visible,
-.vu-style-btn:focus-visible,
 .station-selector select:focus-visible {
     outline: 3px solid var(--primary-color);
     outline-offset: 2px;
@@ -738,4 +743,148 @@ body.popout-body {
 
 .volume-control input[type="range"]:focus-visible::-moz-range-thumb {
     box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--primary-color);
+}
+
+/* Settings Modal */
+.settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.settings-content {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.settings-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.settings-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    box-sizing: border-box;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.settings-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.setting-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.setting-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Custom Stations List */
+.custom-stations-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+}
+
+.station-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.station-item:last-child {
+    border-bottom: none;
+}
+
+.station-name {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+.no-stations {
+    padding: 10px;
+    text-align: center;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.9rem;
 }

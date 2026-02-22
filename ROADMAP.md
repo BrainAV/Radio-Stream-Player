@@ -37,7 +37,7 @@ This document outlines the future direction and planned features for the Radio S
 -   **[ ] Custom Stations:**
     -   Implement a feature allowing users to add their own radio stream URLs.
     -   Use `localStorage` to save user-added stations so they persist between sessions.
--   **[ ] Favorites System:**
+    -   **[x] Favorites System:**
     -   Allow users to mark stations as "favorites" for quick access.
 -   **[ ] Stream Metadata Display:**
     -   Investigate methods (e.g., ICY metadata) to fetch and display the currently playing song and artist information from the stream, where available. This may require a server-side proxy for CORS reasons.
@@ -61,3 +61,9 @@ This document outlines the future direction and planned features for the Radio S
     -   Migrate away from static GitHub Pages hosting to a full LAMP/LEMP stack environment.
     -   **Goal:** Enable advanced features like user accounts, server-side playlist management, and a robust API.
     -   **Implementation:** Develop a PHP backend with a MySQL/MariaDB database to store stations, user preferences, and analytics.
+    -   **Database Schema:** Plan for a robust schema including:
+        -   `Station ID`
+        -   `Genre` (Categorization)
+        -   `Country of Origin`
+        -   `Bitrate/Format`
+    -   **Search & Filtering:** Implement a search bar and filter controls (by Genre/Country) to easily find stations within the larger database.
