@@ -5,6 +5,10 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
  
 *(Note: This is a sample GIF. You can replace it with a real screenshot or GIF of your application.)*
 
+**[🔴 Live Demo](http://radio.djay.ca/)**
+
+*Note: The live demo is hosted via HTTP to support "Mixed Content" playback. Many radio streams still use HTTP, which modern browsers block if the site is loaded via HTTPS.*
+
 ## ✨ Features
 
 - **Multiple Stations**: Comes pre-loaded with a selection of high-quality electronic music radio streams.
@@ -35,7 +39,7 @@ This project is designed to be run directly in a web browser. No build step is r
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/your-username/Radio-Stream-Player.git
+    git clone https://github.com/BrainAV/Radio-Stream-Player.git
     ```
 2.  Navigate to the project directory:
     ```bash

@@ -153,5 +153,13 @@ Follow these steps to add a new visualization style (e.g., "neon").
 4.  **`visualizer.js` - Create Reset Function** (Optional): If your meter needs to be reset to a zero state when paused, add logic to the `resetVuMeters` function.
 5.  **`styles.css` - Add Styling**: Add the necessary CSS rules to style your new meter. Use a class selector based on the style name (e.g., `.vu-meters.vu-neon`).
 
+## 5. Deployment Considerations
+
+### 5.1. Mixed Content (HTTP vs HTTPS)
+
+Many online radio stations (especially older Shoutcast/Icecast servers) still broadcast over **HTTP**. Modern web browsers enforce a security policy called **Mixed Content**, which blocks insecure HTTP resources (like audio streams) from loading on a secure HTTPS page.
+
+To ensure maximum compatibility with all radio stations, this application is best deployed on **HTTP**. If deployed on HTTPS, only HTTPS streams will play; HTTP streams will fail silently or trigger a browser error.
+
 ---
 *This guide should be kept up-to-date with any significant architectural changes.*
