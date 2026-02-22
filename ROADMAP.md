@@ -39,6 +39,15 @@ This document outlines the future direction and planned features for the Radio S
     -   Use `localStorage` to save user-added stations so they persist between sessions.
     -   **[x] Favorites System:**
     -   Allow users to mark stations as "favorites" for quick access.
+-   **[ ] Personalization:**
+    -   **[ ] Custom Backgrounds:**
+        -   Allow users to input a URL to set as the player background.
+        -   Save the preference in `localStorage`.
+-   **[ ] Community & Feedback:**
+    -   **[ ] Station Submission:**
+        -   Add a mechanism (e.g., link to Google Form or GitHub Issue) for users to suggest new radio stations to be added to the default list.
+    -   **[ ] Issue Reporting:**
+        -   Add a "Report Broken Stream" button that allows users to flag stations that are offline or malfunctioning.
 -   **[ ] Stream Metadata Display:**
     -   Investigate methods (e.g., ICY metadata) to fetch and display the currently playing song and artist information from the stream, where available. This may require a server-side proxy for CORS reasons.
 
@@ -61,6 +70,10 @@ This document outlines the future direction and planned features for the Radio S
     -   Migrate away from static GitHub Pages hosting to a full LAMP/LEMP stack environment.
     -   **Goal:** Enable advanced features like user accounts, server-side playlist management, and a robust API.
     -   **Implementation:** Develop a PHP backend with a MySQL/MariaDB database to store stations, user preferences, and analytics.
+    -   **File Uploads:** Allow users to upload custom background images (e.g., WebP) instead of just providing URLs.
+    -   **Community Features:**
+        -   Store user-submitted station suggestions in the database for review.
+        -   Log broken stream reports to an admin dashboard.
     -   **Database Schema:** Plan for a robust schema including:
         -   `Station ID`
         -   `Genre` (Categorization)

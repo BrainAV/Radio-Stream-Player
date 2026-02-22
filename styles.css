@@ -769,6 +769,9 @@ body.popout-body {
     max-width: 400px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
+    max-height: 90vh; /* Prevent modal from exceeding viewport height */
+    display: flex;
+    flex-direction: column;
 }
 
 .settings-header {
@@ -778,6 +781,11 @@ body.popout-body {
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
+}
+
+.settings-body {
+    overflow-y: auto; /* Enable vertical scrolling for the settings body */
+    flex-grow: 1; /* Allow the body to fill the available space */
 }
 
 .settings-header h3 {
