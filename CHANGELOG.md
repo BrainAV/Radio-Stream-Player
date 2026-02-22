@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Documentation
+-   **Roadmap:** Updated the "Backend Service" goal to specifically target a Cloudflare Worker solution for handling HTTP streams on HTTPS sites.
+-   **General:** Migrated changelog from `PROGRESS.md` to `CHANGELOG.md`.
+
 ## [1.1.1] - 2025-12-10
 
 ### Changed

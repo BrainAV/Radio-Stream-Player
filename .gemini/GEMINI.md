@@ -13,7 +13,7 @@ This file is your **Command Center**. It contains the "Magic Spells" (Prompts) t
 
 ### 1. Start of Session (The "Quick Sync")
 *Use this to instantly load the project context. You just used this!*
-> "Please read all the project context files (`ROADMAP.md`, `README.md`, `PROGRESS.md`, `DEVELOPER_GUIDE.md`, and the contents of the `.gemini` folder) to get in sync with the current state of the project."
+> "Please read all the project context files (`ROADMAP.md`, `README.md`, `CHANGELOG.md`, `DEVELOPER_GUIDE.md`, and the contents of the `.gemini` folder) to get in sync with the current state of the project."
 
 ### 2. Feature Development
 > "Let's implement the '[Feature Name]' feature from the `ROADMAP.md`."
@@ -23,9 +23,15 @@ This file is your **Command Center**. It contains the "Magic Spells" (Prompts) t
 > "I've found a bug: [Describe bug]. Let's work on a fix."
 
 ### 4. Documentation
-> "Please update the `PROGRESS.md` (our changelog) to reflect the recent changes we've made."
+> "Please update the `CHANGELOG.md` to reflect the recent changes we've made."
 > "Let's review all the documentation files to ensure they are consistent and up-to-date."
 > "Summarize the changes we made in this session for a Git commit message. Follow the Conventional Commits format."
+
+### 5. Release Workflow
+> "Let's prepare release vX.X.X.
+> 1. Update `CHANGELOG.md` by moving [Unreleased] items to [vX.X.X].
+> 2. Create a new file `docs/RELEASE_vX.X.X.md` with a user-friendly summary of the changes.
+> 3. Verify `README.md` is up to date."
 
 ---
 

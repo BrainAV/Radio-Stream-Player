@@ -1,5 +1,10 @@
 # Radio Stream Player
 
+![GitHub](https://img.shields.io/github/license/BrainAV/Radio-Stream-Player)
+![GitHub last commit](https://img.shields.io/github/last-commit/BrainAV/Radio-Stream-Player)
+![GitHub issues](https://img.shields.io/github/issues/BrainAV/Radio-Stream-Player)
+![GitHub stars](https://img.shields.io/github/stars/BrainAV/Radio-Stream-Player?style=social)
+
 A sleek, modern, and feature-rich web-based radio stream player built with vanilla JavaScript and the Web Audio API. It provides a great listening experience with dynamic audio visualizations.
 
  

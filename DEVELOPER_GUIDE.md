@@ -22,6 +22,8 @@ The project consists of a few key files:
 - `visualizer.js`: An ES module responsible for all Web Audio API analysis, canvas/DOM drawing, and VU meter style logic.
 - `styles.css`: Contains all styling for the application, including layout, theming (light/dark modes), and the appearance of all VU meter styles.
 - `script.js`: The main entry point. It imports the other modules (`player.js`, `visualizer.js`) and initializes the application. It also contains the theme management logic.
+- `popout-script.js`: The entry point for the pop-out window. It reuses `player.js` logic but adapts it for the secondary window context.
+- `CHANGELOG.md`: The history of changes and versions (formerly `PROGRESS.md`).
 - `README.md`: The user-facing documentation.
 - `DEVELOPER_GUIDE.md`: (This file) The technical documentation for contributors.
 
@@ -160,6 +162,21 @@ Follow these steps to add a new visualization style (e.g., "neon").
 Many online radio stations (especially older Shoutcast/Icecast servers) still broadcast over **HTTP**. Modern web browsers enforce a security policy called **Mixed Content**, which blocks insecure HTTP resources (like audio streams) from loading on a secure HTTPS page.
 
 To ensure maximum compatibility with all radio stations, this application is best deployed on **HTTP**. If deployed on HTTPS, only HTTPS streams will play; HTTP streams will fail silently or trigger a browser error.
+
+**Future Roadmap (Cloudflare Workers):**
+We are planning to implement a **Cloudflare Worker** to act as a secure proxy. This will allow the main site to be loaded via HTTPS, while the Worker fetches the insecure HTTP stream on the server side and delivers it to the browser over HTTPS.
+
+*Note: Cloudflare Free Tier allows 100,000 requests/day. Since a continuous audio stream counts as only 1 request, this is a highly viable solution.*
+
+## 6. Release Process
+
+When preparing a new release (incrementing the version number):
+
+1.  **Update `CHANGELOG.md`**: Move the content from `[Unreleased]` to a new section with the version number and date (e.g., `[1.2.0] - 2025-12-25`).
+2.  **Create Release Notes**: Create a new file in `docs/` named `RELEASE_vX.X.X.md` (e.g., `docs/RELEASE_v1.2.0.md`).
+    -   This file should contain a user-friendly summary of the release, highlighting key features and changes.
+    -   It serves as the source for GitHub Release notes or announcements.
+3.  **Update Version**: Ensure any version numbers in the code or `README.md` (if applicable) are updated.
 
 ---
 *This guide should be kept up-to-date with any significant architectural changes.*

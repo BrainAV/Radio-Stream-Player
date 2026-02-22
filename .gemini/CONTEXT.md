@@ -24,7 +24,7 @@ Refer to `DEVELOPER_GUIDE.md` for architecture details.
 - **Security**: Be mindful of CORS policies related to audio streams. Future backend work will address this more robustly.
 - **Documentation**:
     - Update `ROADMAP.md` with new feature ideas.
-    - Update `PROGRESS.md` (Changelog) after implementing features or fixes.
+    - Update `CHANGELOG.md` after implementing features or fixes.
     - Update `DEVELOPER_GUIDE.md` with any architectural changes.
 - **Style**: Clean, commented code. Follow `.github/STYLE_GUIDE.md`.
 - **Workflow**:
