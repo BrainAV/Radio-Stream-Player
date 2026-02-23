@@ -16,10 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 -   **Visualizer:** Fixed an issue where the "Circular" VU meter was not displaying correctly due to incorrect CSS selectors and SVG class assignment.
 -   **Mobile:** Fixed "Classic" and "Neon" VU meters not animating correctly on mobile devices (animating width instead of height).
+-   **UI/UX:** Fixed a layout issue where the settings modal was not scrollable on small screens, preventing access to all options.
 
 ### Documentation
 -   **Roadmap:** Updated the "Backend Service" goal to specifically target a Cloudflare Worker solution for handling HTTP streams on HTTPS sites.
 -   **General:** Migrated changelog from `PROGRESS.md` to `CHANGELOG.md`.
+-   **Roadmap:** Added plans for "Custom Backgrounds" (Mid-Term) and image uploads (Long-Term).
+-   **Roadmap:** Added plans for "Community & Feedback" features, including station submission and broken stream reporting.
 
 ## [1.1.1] - 2025-12-10
 
