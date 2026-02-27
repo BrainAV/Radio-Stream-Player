@@ -34,20 +34,20 @@ This document outlines the future direction and planned features for the Radio S
         -   **[x]** Redesign the volume slider for a more modern appearance.
         -   **[x]** Re-organize player controls into a more compact, horizontal layout.
         -   **[x]** Apply the modern look and feel to the pop-out player for a consistent UX.
--   **[ ] Custom Stations:**
-    -   Implement a feature allowing users to add their own radio stream URLs.
-    -   Use `localStorage` to save user-added stations so they persist between sessions.
+-   **[x] Custom Stations:**
+    -   **[x]** Implement a feature allowing users to add their own radio stream URLs.
+    -   **[x]** Use `localStorage` to save user-added stations so they persist between sessions.
     -   **[x] Favorites System:**
     -   Allow users to mark stations as "favorites" for quick access.
 -   **[ ] Personalization:**
-    -   **[ ] Custom Backgrounds:**
-        -   Allow users to input a URL to set as the player background.
-        -   Save the preference in `localStorage`.
--   **[ ] Community & Feedback:**
-    -   **[ ] Station Submission:**
-        -   Add a mechanism (e.g., link to Google Form or GitHub Issue) for users to suggest new radio stations to be added to the default list.
-    -   **[ ] Issue Reporting:**
-        -   Add a "Report Broken Stream" button that allows users to flag stations that are offline or malfunctioning.
+    -   **[x] Custom Backgrounds:**
+        -   **[x]** Allow users to input a URL to set as the player background.
+        -   **[x]** Save the preference in `localStorage`.
+-   **[x] Community & Feedback:**
+    -   **[x] Station Submission:**
+        -   **[x]** Add a mechanism (e.g., link to Google Form or GitHub Issue) for users to suggest new radio stations to be added to the default list.
+    -   **[x] Issue Reporting:**
+        -   **[x]** Add a "Report Broken Stream" button that allows users to flag stations that are offline or malfunctioning.
 -   **[ ] Stream Metadata Display:**
     -   Investigate methods (e.g., ICY metadata) to fetch and display the currently playing song and artist information from the stream, where available. This may require a server-side proxy for CORS reasons.
 
