@@ -13,6 +13,9 @@ const nameInput = document.getElementById('custom-station-name');
 const genreInput = document.getElementById('custom-station-genre');
 const urlInput = document.getElementById('custom-station-url');
 const customStationsList = document.getElementById('custom-stations-list');
+const bgUrlInput = document.getElementById('bg-url-input');
+const setBgBtn = document.getElementById('set-bg-btn');
+const clearBgBtn = document.getElementById('clear-bg-btn');
 
 // Initialize Settings
 function initSettings() {
@@ -155,6 +158,29 @@ function initSettings() {
     }
 
     renderCustomStations();
+
+    // Personalization Logic
+    if (bgUrlInput && setBgBtn && clearBgBtn) {
+        const savedBg = localStorage.getItem('customBackground');
+        if (savedBg) {
+            bgUrlInput.value = savedBg;
+        }
+
+        setBgBtn.addEventListener('click', () => {
+            const url = bgUrlInput.value.trim();
+            if (url) {
+                localStorage.setItem('customBackground', url);
+                document.body.style.backgroundImage = `url('${url}')`;
+            }
+        });
+
+        clearBgBtn.addEventListener('click', () => {
+            localStorage.removeItem('customBackground');
+            bgUrlInput.value = '';
+            // Reset to default background from CSS
+            document.body.style.backgroundImage = '';
+        });
+    }
 
     // Custom Stations Logic
     if (addStationBtn && nameInput && urlInput) {

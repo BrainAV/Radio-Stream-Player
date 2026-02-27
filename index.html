@@ -83,6 +83,14 @@
                     </select>
                 </div>
                 <div class="setting-item">
+                    <label>Personalization</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="url" id="bg-url-input" class="settings-input" placeholder="Background Image URL" style="margin-bottom: 0;">
+                        <button id="set-bg-btn" class="console-btn" style="padding: 5px 15px; white-space: nowrap;">Set</button>
+                        <button id="clear-bg-btn" class="console-btn" style="padding: 5px 15px; white-space: nowrap; background-color: var(--border-color); color: var(--text-color);">Clear</button>
+                    </div>
+                </div>
+                <div class="setting-item">
                     <label>Manage Custom Stations</label>
                     <div id="custom-stations-list" class="custom-stations-list"></div>
                     <input type="text" id="custom-station-name" class="settings-input" placeholder="Station Name">
@@ -90,6 +98,13 @@
                     <div style="display: flex; gap: 10px;">
                         <input type="url" id="custom-station-url" class="settings-input" placeholder="Stream URL (https://...)" style="margin-bottom: 0;">
                         <button id="add-station-btn" class="console-btn" style="padding: 5px 15px; white-space: nowrap;">Add</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label>Community & Feedback</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Station+Suggestion&body=Name:+%0AURL:+%0AGenre:+" target="_blank" class="settings-link">Suggest a New Station</a>
+                        <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Broken+Stream+Report&body=Station+Name:+" target="_blank" class="settings-link">Report a Broken Stream</a>
                     </div>
                 </div>
             </div>
