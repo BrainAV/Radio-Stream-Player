@@ -17,6 +17,7 @@ const bgUrlInput = document.getElementById('bg-url-input');
 const setBgBtn = document.getElementById('set-bg-btn');
 const clearBgBtn = document.getElementById('clear-bg-btn');
 const bgPresetsContainer = document.getElementById('bg-presets-container');
+const favoriteBtn = document.getElementById('favorite-btn');
 
 // Initialize Settings
 function initSettings() {
@@ -81,9 +82,13 @@ function initSettings() {
     if (favoritesOnlyCheck) {
         const savedFavOnly = localStorage.getItem('favoritesOnly') === 'true';
         favoritesOnlyCheck.checked = savedFavOnly;
+        
+        // Initial state: Disable favorite button if filter is active
+        if (favoriteBtn) favoriteBtn.disabled = savedFavOnly;
 
         favoritesOnlyCheck.addEventListener('change', (e) => {
             localStorage.setItem('favoritesOnly', e.target.checked);
+            if (favoriteBtn) favoriteBtn.disabled = e.target.checked;
             window.dispatchEvent(new CustomEvent('stationListUpdated'));
         });
     }

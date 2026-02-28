@@ -40,26 +40,13 @@ This file is your **Command Center**. It contains the "Magic Spells" (Prompts) t
 > "You are Gemini Code Assist, a world-class software engineering assistant. We are building a 'Radio Stream Player' web application.
 > **Architecture:** Vanilla JavaScript (ES6+), HTML5, CSS3, Web Audio API.
 > **Structure:** Modular JS (`player.js`, `visualizer.js`, `stations.js`).
-> **Current Goal:** We are working on the Mid-Term Goals (v1.2) from the `ROADMAP.md`.
+> **Current Goal:** We are finalizing Mid-Term Goals (v1.2) and preparing for Long-Term Goals (v2.0) from the `ROADMAP.md`.
 > **Style:** Clean, accessible, well-commented, and performant code."
 ---
 
 ## 🚀 Mid-Term Goals (v1.2)
 
-### 1. Custom Stations
-> "Let's implement the 'Custom Stations' feature. We need to:
-> 1. Add a button and a form/modal to the UI for users to input a station name and URL.
-> 2. Create functions to add the new station to the station list and update the `<select>` dropdown.
-> 3. Use `localStorage` to save the user-added stations so they persist across sessions.
-> 4. Add logic to load these custom stations when the application starts."
-
-### 2. Favorites System
-> "Let's add a 'Favorites' system. This will involve:
-> 1. Adding a 'favorite' icon (e.g., a star) next to the station selector or in the station list.
-> 2. When a user favorites a station, save its ID or URL to `localStorage`.
-> 3. Modify the station list to show favorited stations at the top."
-
-### 3. Stream Metadata
+### 1. Stream Metadata
 > "Let's investigate displaying the currently playing song/artist. This is a research-heavy task.
 > 1. Research how to access ICY (Icy-MetaData) headers from a stream URL using JavaScript.
 > 2. Determine if a server-side proxy is necessary to bypass CORS limitations.

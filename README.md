@@ -25,7 +25,11 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
   - Waveform (Oscilloscope)
   - Spectrum (Frequency Bars)
   - Retro (Analog Needle)
+  - Neon (Glowing Bars)
 - **Light & Dark Themes**: Automatically detects the user's system preference and allows manual toggling.
+- **Personalization**: Customize the player with your own background images or choose from curated presets.
+- **Favorites System**: Save your top stations for quick access.
+- **Media Integration**: Displays station info on your OS lock screen and supports hardware media keys (Play/Pause/Next/Prev).
 - **Pop-out Player**: Open the player in a separate, compact window for easy multitasking.
 - **Accessible**: Built with accessibility in mind, featuring screen reader support and full keyboard navigation.
 - **Responsive Design**: Looks and works great on both desktop and mobile devices.

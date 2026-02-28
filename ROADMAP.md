@@ -38,11 +38,12 @@ This document outlines the future direction and planned features for the Radio S
     -   **[x]** Implement a feature allowing users to add their own radio stream URLs.
     -   **[x]** Use `localStorage` to save user-added stations so they persist between sessions.
     -   **[x] Favorites System:**
-    -   Allow users to mark stations as "favorites" for quick access.
--   **[ ] Personalization:**
+        -   **[x]** Allow users to mark stations as "favorites" for quick access.
+-   **[x] Personalization:**
     -   **[x] Custom Backgrounds:**
         -   **[x]** Allow users to input a URL to set as the player background.
         -   **[x]** Save the preference in `localStorage`.
+        -   **[x]** Provide curated background presets.
 -   **[x] Community & Feedback:**
     -   **[x] Station Submission:**
         -   **[x]** Add a mechanism (e.g., link to Google Form or GitHub Issue) for users to suggest new radio stations to be added to the default list.

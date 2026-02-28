@@ -506,6 +506,12 @@ body.popout-body {
     background-color: var(--primary-hover);
 }
 
+.console-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .console-btn .icon {
     width: 24px;
     height: 24px;

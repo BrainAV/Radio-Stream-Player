@@ -21,7 +21,8 @@ The project consists of a few key files:
 - `player.js`: An ES module that handles all core player logic, including audio playback, UI controls (play, volume, station select), and state management.
 - `visualizer.js`: An ES module responsible for all Web Audio API analysis, canvas/DOM drawing, and VU meter style logic.
 - `styles.css`: Contains all styling for the application, including layout, theming (light/dark modes), and the appearance of all VU meter styles.
-- `script.js`: The main entry point. It imports the other modules (`player.js`, `visualizer.js`) and initializes the application. It also contains the theme management logic.
+- `script.js`: The main entry point. It imports the other modules (`player.js`, `visualizer.js`) and initializes the application.
+- `settings.js`: Handles the logic for the settings modal, including theme toggling, custom stations, background preferences, and favorites filtering.
 - `popout-script.js`: The entry point for the pop-out window. It reuses `player.js` logic but adapts it for the secondary window context.
 - `CHANGELOG.md`: The history of changes and versions (formerly `PROGRESS.md`).
 - `README.md`: The user-facing documentation.

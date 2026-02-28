@@ -10,10 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Documentation
+
+---
+
+## [1.1.2] - 2026-02-28
+
+### Added
 -   **Personalization:** Added "Custom Backgrounds" feature. Users can now set a custom image URL as the player background via the Settings modal.
+-   **Personalization:** Added a "Background Presets" grid in Settings, allowing users to quickly switch between curated high-quality themes (Default, Cyberpunk, Deep Space, Abstract).
 -   **Community:** Added "Suggest a New Station" and "Report a Broken Stream" links to the Settings modal, pointing to GitHub issue templates.
 -   **Visualizer:** Added a new "Neon" VU meter style with a glowing effect.
 -   **Metadata:** Implemented Media Session API support. The player now displays station information (Name, Genre, Country) on the OS lock screen and media controls, and supports hardware media keys (Play/Pause/Next/Prev).
+
+### Changed
+-   **UI/UX:** The "Favorite" button is now disabled when "Show Favorites Only" is active to prevent accidental removal of the currently playing station from the filtered list.
 
 ### Fixed
 -   **Visualizer:** Fixed an issue where the "Circular" VU meter was not displaying correctly due to incorrect CSS selectors and SVG class assignment.
