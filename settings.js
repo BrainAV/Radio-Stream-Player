@@ -16,6 +16,7 @@ const customStationsList = document.getElementById('custom-stations-list');
 const bgUrlInput = document.getElementById('bg-url-input');
 const setBgBtn = document.getElementById('set-bg-btn');
 const clearBgBtn = document.getElementById('clear-bg-btn');
+const bgPresetsContainer = document.getElementById('bg-presets-container');
 
 // Initialize Settings
 function initSettings() {
@@ -161,6 +162,39 @@ function initSettings() {
 
     // Personalization Logic
     if (bgUrlInput && setBgBtn && clearBgBtn) {
+        // Background Presets
+        const backgroundPresets = [
+            { name: 'Default', url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1950' },
+            { name: 'Cyberpunk', url: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=1950' },
+            { name: 'Deep Space', url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1950' },
+            { name: 'Abstract', url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1950' }
+        ];
+
+        if (bgPresetsContainer) {
+            bgPresetsContainer.className = 'bg-preset-grid';
+            const currentBg = localStorage.getItem('customBackground') || backgroundPresets[0].url;
+
+            backgroundPresets.forEach(preset => {
+                const btn = document.createElement('button');
+                btn.className = 'bg-preset-btn';
+                if (currentBg === preset.url) btn.classList.add('active');
+                btn.style.backgroundImage = `url('${preset.url}')`;
+                btn.title = preset.name;
+                btn.ariaLabel = `Set background to ${preset.name}`;
+                
+                btn.onclick = () => {
+                    document.body.style.backgroundImage = `url('${preset.url}')`;
+                    localStorage.setItem('customBackground', preset.url);
+                    bgUrlInput.value = preset.url;
+                    
+                    // Update active state
+                    Array.from(bgPresetsContainer.children).forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+                bgPresetsContainer.appendChild(btn);
+            });
+        }
+
         const savedBg = localStorage.getItem('customBackground');
         if (savedBg) {
             bgUrlInput.value = savedBg;
@@ -171,6 +205,13 @@ function initSettings() {
             if (url) {
                 localStorage.setItem('customBackground', url);
                 document.body.style.backgroundImage = `url('${url}')`;
+                
+                // Update presets active state (deselect all if custom URL doesn't match)
+                if (bgPresetsContainer) {
+                    Array.from(bgPresetsContainer.children).forEach(b => {
+                        b.classList.toggle('active', b.style.backgroundImage.includes(url));
+                    });
+                }
             }
         });
 
@@ -179,6 +220,12 @@ function initSettings() {
             bgUrlInput.value = '';
             // Reset to default background from CSS
             document.body.style.backgroundImage = '';
+            
+            // Reset presets to default (first one)
+            if (bgPresetsContainer && bgPresetsContainer.children[0]) {
+                Array.from(bgPresetsContainer.children).forEach(b => b.classList.remove('active'));
+                bgPresetsContainer.children[0].classList.add('active');
+            }
         });
     }
 
