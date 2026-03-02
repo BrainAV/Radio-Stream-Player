@@ -18,7 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   **Popout Player:** Updated the popout player (`popout.html` & `popout-script.js`) to achieve feature parity with the main player. It now supports the scrolling "Now Playing" metadata marquee, Custom Stations, and secure proxy routing for CORS.
 
 ### Fixed
+-   **UI/UX:** Fixed an issue where very long track names (like continuous DJ mixes or Progressive Psytrance titles) would stretch the glassmorphism player layout horizontally.
 -   **Codebase:** Cleaned up unused CSS rulesets.
+
+### Documentation
+-   **Backend:** Added a "Request Limits & Usage Estimation" section to `DEVELOPER_GUIDE.md` and `server/cloudflare-worker/README.md` to explain how Cloudflare Free Tier limits impact concurrent listener capacity.
+-   **Backend:** Added instructions on how to optimize the frontend polling interval (`12000` ms) to drastically reduce Cloudflare Request volume.
 
 ---
 

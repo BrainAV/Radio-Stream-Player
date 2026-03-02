@@ -172,6 +172,34 @@ To solve this, the application natively utilizes a **Cloudflare Worker Proxy** h
 **Worker Security:**
 The Worker script checks the `Origin` and `Referer` headers. It will return a `403 Forbidden` response to any request that does not originate from `localhost` or a `*.djay.ca` domain, preventing abuse of the proxy bandwidth.
 
+### 5.2. Request Limits & Usage Estimation (Cloudflare Free Tier)
+
+Cloudflare's **Free Tier** allows for **100,000 requests per day**. It's important to understand how the player utilizes these requests to estimate your maximum concurrent user capacity.
+
+**How Requests Are Triggered:**
+When a user listens to a station, requests are made in two ways:
+1.  **Audio Stream (1 Request):** The initial connection to the `/` proxy endpoint consumes exactly **1 request**. Because it is a continuous streaming connection, it stays open and does not generate additional requests, regardless of how long they listen.
+2.  **Metadata Polling (Multiple Requests):** To display live track information, the frontend polls the `/metadata` endpoint every **12 seconds**.
+
+**Usage Math per User:**
+*   1 User listening for 1 Minute = 1 (Audio) + 5 (Metadata) = **6 Requests**
+*   1 User listening for 1 Hour = 60 mins / 12 secs = 300 Metadata requests. Total = **301 Requests / Hour**.
+
+**Capacity Estimation:**
+With a limit of 100,000 requests per day:
+*   Maximum total listening hours per day: `100,000 / 301` ≈ **332 Hours**
+*   **Scenario A (Dedicated Listeners):** If your average user listens for 3 hours a day, you can support roughly **~110 daily active users** on the completely free tier.
+*   **Scenario B (Casual Listeners):** If your average user listens for 1 hour a day, you can support roughly **~330 daily active users**.
+
+**How to Optimize (Reduce Requests):**
+If you are approaching the 100k daily limit, you can safely decrease the metadata polling frequency in the frontend code. 
+1. Open `player.js` and `popout-script.js`.
+2. Locate the `setInterval` function inside `updateNowPlaying()` (around line 365 in `player.js`).
+3. Change the `12000` (12 seconds) value to something higher, like `30000` (30 seconds) or `60000` (1 minute). 
+*Note: A 60-second interval drops the usage from 301 requests/hour down to just 61 requests/hour, effectively quintupling your user capacity!*
+
+*Note: If your application grows beyond these limits, you can easily upgrade to Cloudflare Workers Paid ($5/month for 10 million requests).*
+
 ## 6. Release Process
 
 When preparing a new release (incrementing the version number):

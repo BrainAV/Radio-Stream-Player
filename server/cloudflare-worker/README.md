@@ -43,3 +43,31 @@ Once deployed, you need to tell the frontend player to use your new proxy.
     ```
     *Make sure the URL ends with a trailing slash!*
 3.  Save the file, and your player will now automatically route HTTP traffic through your newly deployed proxy!
+
+## Request Limits & Capacity Planning (Cloudflare Free Tier)
+
+Cloudflare's **Free Tier** allows for **100,000 requests per day**. It's important to understand how this player utilizes these requests to estimate your maximum concurrent user capacity.
+
+**How Requests Are Triggered:**
+When a user listens to a station, requests are made in two ways:
+1.  **Audio Stream (1 Request):** The initial connection to the `/` proxy endpoint consumes exactly **1 request**. Because it is a continuous streaming connection, it stays open and does not generate additional requests, regardless of how long they listen.
+2.  **Metadata Polling (Multiple Requests):** To display live track information, the frontend polls the `/metadata` endpoint every **12 seconds**.
+
+**Usage Math per User:**
+*   1 User listening for 1 Minute = 1 (Audio) + 5 (Metadata) = **6 Requests**
+*   1 User listening for 1 Hour = 60 mins / 12 secs = 300 Metadata requests. Total = **301 Requests / Hour**.
+
+**Capacity Estimation:**
+With a limit of 100,000 requests per day:
+*   Maximum total listening hours per day: `100,000 / 301` ≈ **332 Hours**
+*   **Scenario A:** If your average user listens for 3 hours a day, you can support roughly **~110 daily active users**.
+*   **Scenario B:** If your average user listens for 1 hour a day, you can support roughly **~330 daily active users**.
+
+**How to Optimize (Reduce Requests):**
+If you are approaching the 100k daily limit, you can dramatically reduce request volume by adjusting the frontend polling frequency.
+1. Open `player.js` and `popout-script.js` in the project root.
+2. Locate the `setInterval` function inside the `updateNowPlaying()` logic.
+3. Change the interval time from `12000` (12 seconds) to a larger number, such as `30000` (30 seconds) or `60000` (1 minute).
+*Example: Changing it to 60 seconds drops the metadata requests from 300/hr to 60/hr. This increases your free tier capacity by 5x!*
+
+*Note: If your application grows beyond these limits, you can easily upgrade to Cloudflare Workers Paid ($5/month for 10 million requests).*

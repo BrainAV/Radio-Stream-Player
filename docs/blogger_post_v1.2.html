@@ -1,0 +1,74 @@
+<div style="font-family: inherit; line-height: 1.6; color: #333;">
+    <h2 style="color: #2b6cb0;">Radio Stream Player v1.2: The "Universal Streaming" Update is Here! 🎵🚀</h2>
+
+    <p>It feels like just yesterday we released version 1.1, introducing custom visuals, new themes, and the pop-out
+        player. But today, I am incredibly excited to announce the release of <strong>Radio Stream Player v1.2</strong>!
+        This is arguably our biggest and most important update yet.</p>
+
+    <p>If you've ever tried to build an audio player for the modern web, you know the struggle: most legacy internet
+        radio stations still broadcast over insecure <code>http://</code> streams. But because our application is hosted
+        safely on <code>https://</code>, modern browsers simply block these streams with a dreaded "Mixed Content"
+        error. It was incredibly frustrating... until now.</p>
+
+    <h3 style="color: #2c5282; margin-top: 30px;">🛡️ The Magic of the Cloudflare Worker Proxy</h3>
+    <p>To finally solve the Mixed Content problem, we built a custom backend proxy using Cloudflare Workers
+        (<code>api.djay.ca</code>). Instead of your browser trying (and failing) to connect to old HTTP stations
+        directly, our player now silently routes those streams through our blazing-fast worker. The worker fetches the
+        insecure radio stream on our behalf and securely pipes it back to you via HTTPS.</p>
+    <p><strong>The result?</strong> You can now listen to <em>any</em> radio station in the world, securely, without any
+        annoying browser errors!</p>
+
+    <h3 style="color: #2c5282; margin-top: 30px;">✨ Live "Now Playing" Track Info</h3>
+    <p>But we didn't stop there. Because our Cloudflare proxy is fetching the stream, we built a secondary
+        <code>/metadata</code> endpoint that actively extracts the live <strong>ICY Metadata</strong> from the
+        broadcast. What does this mean for you?
+    </p>
+    <ul>
+        <li><strong>Scrolling Marquee:</strong> The player header now features a sleek "Now Playing" display that shows
+            you the exact track and artist name currently playing. If the track name is super long (looking at you,
+            progressive trance mixes!), it smoothly scrolls across the screen.</li>
+        <li><strong>Lock Screen Integration:</strong> We wired this live data directly into the OS Media Session API.
+            Now, when you play a station, the actual track name will appear on your smartphone's lock screen, your
+            smartwatch, and your desktop media controls!</li>
+    </ul>
+
+    <h3 style="color: #2c5282; margin-top: 30px;">⚙️ Player & UI Refinements</h3>
+    <p>We've also taken the time to polish the rest of the experience based on your feedback:</p>
+    <ul>
+        <li><strong>Edit Custom Stations:</strong> You no longer have to delete and re-add a custom station to fix a
+            typo. You can now simply hit the new "Edit" button (✎) in the Settings menu to tweak the Name, URL, or Genre
+            of any station you've added.</li>
+        <li><strong>Pop-out Player Parity:</strong> The pop-out window has been upgraded! It now fully supports the new
+            Custom Stations, the secure Cloudflare Proxy routing, and it even features the same scrolling metadata
+            marquee as the main player window.</li>
+        <li><strong>New Curated Content:</strong> We've expanded our default lineup with fantastic new stations
+            including <em>Hirsch Radio Psytrance</em>, <em>Hirsch Radio Progressive</em>, and <em>A State of Trance
+                (ASOT)</em>.</li>
+    </ul>
+
+    <h3 style="color: #2c5282; margin-top: 30px;">🙌 Open Source & Developer Friendly</h3>
+    <p>We are proudly open-source! Check out our full codebase, star the repository, or contribute to the project over
+        on our <a href="https://github.com/BrainAV/Radio-Stream-Player" target="_blank"
+            style="color: #3182ce; font-weight: bold;">GitHub Repository</a>.</p>
+    <p>Are you a developer looking to host your own version of the player? We've open-sourced our entire Cloudflare
+        Worker script! You can find the <code>worker.js</code> template inside the repository, along with detailed
+        instructions on how to quickly deploy it to your own free Cloudflare account.</p>
+
+    <h3 style="color: #2c5282; margin-top: 30px;">🌐 Embed the Player Anywhere (iFrame Support)</h3>
+    <p>Want to add the Radio Stream Player to your own website or blog? It's incredibly easy! Because our player is
+        responsive and completely self-contained, you can seamlessly embed it anywhere using a simple HTML iframe. The
+        player will automatically adapt to fit the space you give it, making it the perfect audio companion for your own
+        site.</p>
+
+    <div
+        style="margin-top: 40px; padding: 20px; background-color: #ebf8ff; border-left: 5px solid #3182ce; border-radius: 4px;">
+        <p style="margin: 0; font-weight: bold;">Ready to hear the difference?</p>
+        <p style="margin: 10px 0 0 0;">Check out the live player right now at <a href="http://radio.djay.ca"
+                target="_blank" style="color: #3182ce; font-weight: bold;">radio.djay.ca</a>!</p>
+    </div>
+
+    <p style="margin-top: 30px; font-style: italic; color: #718096;">As always, drop a comment below or open an issue on
+        our <a href="https://github.com/BrainAV/Radio-Stream-Player/issues" target="_blank"
+            style="color: #3182ce;">GitHub</a> if you have any feedback or stations you'd like to see added. Happy
+        listening!</p>
+</div>
