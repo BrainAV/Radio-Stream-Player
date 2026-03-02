@@ -10,9 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+-   **Custom Stations:** Added the ability to edit the Name, URL, and Genre of existing custom stations directly within the Settings modal.
+
 ### Changed
+-   **Audio Routing:** `player.js` now routes *all* streams (both HTTP and HTTPS) through the Cloudflare proxy (`api.djay.ca`). This ensures the Web Audio API always receives the correct `Access-Control-Allow-Origin: *` headers required to render the VU meters without CORS errors.
+-   **Popout Player:** Updated the popout player (`popout.html` & `popout-script.js`) to achieve feature parity with the main player. It now supports the scrolling "Now Playing" metadata marquee, Custom Stations, and secure proxy routing for CORS.
+
 ### Fixed
-### Documentation
+-   **Codebase:** Cleaned up unused CSS rulesets.
 
 ---
 

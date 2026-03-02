@@ -3,12 +3,23 @@ import { stations } from './stations.js';
 const stationSelect = document.getElementById('station-select');
 const playPauseBtn = document.getElementById('play-pause-btn');
 const volumeSlider = document.getElementById('volume-slider');
-const nowPlaying = document.getElementById('now-playing');
+const nowPlayingStation = document.getElementById('now-playing-station');
+const nowPlayingTrack = document.getElementById('now-playing-track');
+
+const PROXY_URL = 'https://api.djay.ca/';
+let metadataInterval = null;
 
 const audio = new Audio();
 audio.crossOrigin = 'anonymous';
 
 let isPlaying = false;
+
+// Helper: Determine the actual URL to feed the audio element
+function getProxiedAudioUrl(url) {
+    if (!url) return '';
+    // Route ALL streams through our secure proxy to inject CORS headers.
+    return `${PROXY_URL}?url=${encodeURIComponent(url)}`;
+}
 
 // --- UI Update Functions ---
 
@@ -29,9 +40,55 @@ function updateVolumeSliderTrack(value) {
     volumeSlider.style.background = `linear-gradient(to right, ${primaryColor} ${progress}%, ${borderColor} ${progress}%)`;
 }
 
+async function fetchMetadata(streamUrl) {
+    if (!nowPlayingTrack) return;
+
+    try {
+        const response = await fetch(`${PROXY_URL}metadata?url=${encodeURIComponent(streamUrl)}`);
+        const data = await response.json();
+
+        if (data.title) {
+            nowPlayingTrack.textContent = data.title;
+
+            if (nowPlayingTrack.scrollWidth > nowPlayingTrack.parentElement.clientWidth) {
+                nowPlayingTrack.classList.add('marquee-active');
+            } else {
+                nowPlayingTrack.classList.remove('marquee-active');
+            }
+        } else {
+            const stationName = stationSelect.options[stationSelect.selectedIndex]?.text || '';
+            nowPlayingTrack.textContent = stationName;
+            nowPlayingTrack.classList.remove('marquee-active');
+        }
+    } catch (error) {
+        nowPlayingTrack.textContent = stationSelect.options[stationSelect.selectedIndex]?.text || '';
+        nowPlayingTrack.classList.remove('marquee-active');
+    }
+}
+
 function updateNowPlaying() {
-    const stationName = stationSelect.options[stationSelect.selectedIndex].text;
-    nowPlaying.textContent = `Now Playing: ${stationName}`;
+    if (!nowPlayingStation || !nowPlayingTrack) return;
+
+    const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+    if (!selectedOption) return;
+
+    nowPlayingStation.textContent = `Now Playing: ${selectedOption.text}`;
+
+    nowPlayingTrack.textContent = "Loading string info...";
+    nowPlayingTrack.classList.remove('marquee-active');
+
+    if (metadataInterval) {
+        clearInterval(metadataInterval);
+        metadataInterval = null;
+    }
+
+    const streamUrl = stationSelect.value;
+
+    fetchMetadata(streamUrl);
+
+    metadataInterval = setInterval(() => {
+        if (isPlaying) fetchMetadata(streamUrl);
+    }, 12000);
 }
 
 // --- Player Logic ---
@@ -41,7 +98,7 @@ function togglePlay() {
     if (isPlaying) {
         audio.play().catch(err => {
             console.error('Playback failed:', err);
-            nowPlaying.textContent = 'Error: Unable to play stream';
+            if (nowPlayingTrack) nowPlayingTrack.textContent = 'Error: Unable to play stream';
             isPlaying = false;
         });
     } else {
@@ -56,7 +113,7 @@ function togglePlay() {
 playPauseBtn.addEventListener('click', togglePlay);
 
 stationSelect.addEventListener('change', () => {
-    audio.src = stationSelect.value;
+    audio.src = getProxiedAudioUrl(stationSelect.value);
     updateNowPlaying();
     if (isPlaying) {
         audio.play();
@@ -78,8 +135,12 @@ window.addEventListener('beforeunload', () => {
 // --- Initialization ---
 
 function init() {
+    // Merge default and custom stations
+    const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
+    const allStations = [...stations, ...customStations];
+
     // Populate stations
-    stations.forEach(station => {
+    allStations.forEach(station => {
         const option = document.createElement('option');
         option.value = station.url;
         option.textContent = station.name;
@@ -99,9 +160,11 @@ function init() {
     // Set initial station and volume
     if (initialStation) {
         stationSelect.value = initialStation;
-        audio.src = initialStation;
+        audio.src = getProxiedAudioUrl(initialStation);
     } else {
-        audio.src = stationSelect.value;
+        if (stationSelect.options.length > 0) {
+            audio.src = getProxiedAudioUrl(stationSelect.value);
+        }
     }
 
     // For simplicity, start with a default volume
