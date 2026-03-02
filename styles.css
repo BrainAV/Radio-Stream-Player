@@ -103,6 +103,14 @@ body {
     align-items: stretch;
 }
 
+.player-content {
+    flex: 1;
+    min-width: 0;
+    /* Critical for text overflow inside flex children */
+    display: flex;
+    flex-direction: column;
+}
+
 .dark-theme .tool-header,
 .dark-theme .radiostream-player {
     background: rgba(31, 41, 55, 0.3);
@@ -495,6 +503,8 @@ body {
     flex-direction: column;
     gap: 4px;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .now-playing-label {
