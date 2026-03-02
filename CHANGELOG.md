@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.2.1] - 2026-03-02
+
 ### Added
 -   **Custom Stations:** Added the ability to edit the Name, URL, and Genre of existing custom stations directly within the Settings modal.
 -   **Content:** Added "Hirsch Radio Psytrance" and "Hirsch Radio Progressive" to the default stations list.
