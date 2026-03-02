@@ -137,12 +137,10 @@ export function initPlayer(state) {
     // Helper: Determine the actual URL to feed the audio element
     function getProxiedAudioUrl(url) {
         if (!url) return '';
-        // If it comes from an HTTP source, tunnel it through our secure proxy
-        if (url.startsWith('http://')) {
-            return `${PROXY_URL}?url=${encodeURIComponent(url)}`;
-        }
-        // HTTPS sources don't need proxying
-        return url;
+        // Route ALL streams through our secure proxy to inject CORS headers.
+        // The Web Audio API requires strict CORS (Access-Control-Allow-Origin: *) 
+        // to draw the VU meters. Many HTTPS stations do not send this natively.
+        return `${PROXY_URL}?url=${encodeURIComponent(url)}`;
     }
 
     const { audio, audioContext } = state;
