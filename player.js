@@ -9,7 +9,8 @@ export const radioStreamState = window.radioStreamState || {
     source: null,
     animationFrameId: null,
     popoutWindow: null,
-    vuStyle: 1 // Default to LED
+    vuStyle: 1, // Default to LED
+    metadataInterval: null
 };
 window.radioStreamState = radioStreamState;
 
@@ -20,8 +21,11 @@ export function initPlayer(state) {
     const playPauseBtn = document.getElementById('play-pause-btn');
     const popoutBtn = document.getElementById('popout-btn');
     const volumeSlider = document.getElementById('volume-slider');
-    const nowPlaying = document.getElementById('now-playing');
+    const nowPlayingStation = document.getElementById('now-playing-station');
+    const nowPlayingTrack = document.getElementById('now-playing-track');
     const popoutNotice = document.getElementById('popout-notice');
+
+    const PROXY_URL = 'https://api.djay.ca/';
 
     function populateStations() {
         // Save current selection if possible
@@ -32,7 +36,7 @@ export function initPlayer(state) {
         const favorites = JSON.parse(localStorage.getItem('favoriteStations')) || [];
         const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
         const allStations = [...defaultStations, ...customStations];
-        
+
         // Filter by Favorites
         const showFavoritesOnly = localStorage.getItem('favoritesOnly') === 'true';
         let filteredStations = allStations;
@@ -50,7 +54,7 @@ export function initPlayer(state) {
         filteredStations.forEach((station, index) => {
             const option = document.createElement('option');
             option.value = station.url;
-            
+
             // Add star if favorite
             const isFav = favorites.includes(station.url);
             option.textContent = (isFav ? '★ ' : '') + station.name;
@@ -102,7 +106,7 @@ export function initPlayer(state) {
         const currentUrl = stationSelect.value;
         const favorites = JSON.parse(localStorage.getItem('favoriteStations')) || [];
         const isFav = favorites.includes(currentUrl);
-        
+
         favoriteBtn.classList.toggle('active', isFav);
         favoriteBtn.title = isFav ? "Remove from Favorites" : "Add to Favorites";
     }
@@ -130,10 +134,23 @@ export function initPlayer(state) {
         navigator.mediaSession.playbackState = state.isPlaying ? 'playing' : 'paused';
     }
 
+    // Helper: Determine the actual URL to feed the audio element
+    function getProxiedAudioUrl(url) {
+        if (!url) return '';
+        // If it comes from an HTTP source, tunnel it through our secure proxy
+        if (url.startsWith('http://')) {
+            return `${PROXY_URL}?url=${encodeURIComponent(url)}`;
+        }
+        // HTTPS sources don't need proxying
+        return url;
+    }
+
     const { audio, audioContext } = state;
 
-    // Initial State
-    audio.src = state.currentStation || stationSelect.value;
+    // Initial State Setup
+    const initialUrl = state.currentStation || stationSelect.value;
+    audio.src = getProxiedAudioUrl(initialUrl);
+
     audio.volume = state.volume || volumeSlider.value;
     if (state.currentStation) {
         stationSelect.value = state.currentStation;
@@ -142,7 +159,8 @@ export function initPlayer(state) {
     updateVolumeSliderTrack(audio.volume); // Set initial track color
     updatePlayPauseIcon(state.isPlaying);
     updateNowPlaying();
-    updateMediaSession();
+
+    // NOTE: updateMediaSession() will be called by updateNowPlaying() / fetchMetadata()
 
     // Event Listeners
     playPauseBtn.addEventListener('click', () => {
@@ -154,7 +172,7 @@ export function initPlayer(state) {
             }
             audio.play().catch(err => {
                 console.error('Playback failed:', err);
-                nowPlaying.textContent = 'Error: Unable to play stream';
+                if (nowPlayingTrack) nowPlayingTrack.textContent = 'Error: Unable to play stream';
             });
         }
         state.isPlaying = !state.isPlaying;
@@ -164,14 +182,17 @@ export function initPlayer(state) {
     });
 
     stationSelect.addEventListener('change', () => {
-        audio.src = stationSelect.value;
-        state.currentStation = stationSelect.value;
+        const rawUrl = stationSelect.value;
+        audio.src = getProxiedAudioUrl(rawUrl);
+        state.currentStation = rawUrl;
+
         updateNowPlaying();
         updateFavoriteBtnState();
+
         if (state.isPlaying) {
             audio.play().catch(err => {
                 console.error('Playback failed:', err);
-                nowPlaying.textContent = 'Error: Unable to play stream';
+                if (nowPlayingTrack) nowPlayingTrack.textContent = 'Error: Unable to play stream';
             });
         }
     });
@@ -205,15 +226,15 @@ export function initPlayer(state) {
     favoriteBtn?.addEventListener('click', () => {
         const currentUrl = stationSelect.value;
         let favorites = JSON.parse(localStorage.getItem('favoriteStations')) || [];
-        
+
         if (favorites.includes(currentUrl)) {
             favorites = favorites.filter(url => url !== currentUrl);
         } else {
             favorites.push(currentUrl);
         }
-        
+
         localStorage.setItem('favoriteStations', JSON.stringify(favorites));
-        
+
         // Refresh list to show/hide stars
         populateStations();
         updateFavoriteBtnState();
@@ -232,21 +253,21 @@ export function initPlayer(state) {
                 state.popoutWindow.focus();
                 return;
             }
-    
+
             if (state.isPlaying) {
                 audio.pause();
                 state.isPlaying = false;
                 updatePlayPauseIcon(false);
             }
-    
+
             const themeClass = document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light';
             const popoutUrl = `popout.html?station=${encodeURIComponent(stationSelect.value)}&theme=${themeClass}`;
             state.popoutWindow = window.open(popoutUrl, 'RadioStreamPopout', 'width=300,height=278');
-    
+
             // Hide main player and show notice
             document.querySelector('.radiostream-player .player-content').style.display = 'none';
             if (popoutNotice) popoutNotice.style.display = 'block';
-    
+
             // Robustly check if the popout window has been closed
             const popoutCheckInterval = setInterval(() => {
                 if (state.popoutWindow && state.popoutWindow.closed) {
@@ -256,7 +277,7 @@ export function initPlayer(state) {
                 }
             }, 500); // Check every 500ms
         });
-    
+
         window.addEventListener('message', (event) => {
             if (event.data.type === 'popoutClosed') {
                 handlePopoutClose();
@@ -277,17 +298,75 @@ export function initPlayer(state) {
         if (state.isPlaying) {
             audio.play().catch(err => {
                 console.error('Playback failed:', err);
-                nowPlaying.textContent = 'Error: Unable to play stream';
+                if (nowPlayingTrack) nowPlayingTrack.textContent = 'Error: Unable to play stream';
             });
             updatePlayPauseIcon(true);
         }
     }
 
-    function updateNowPlaying() {
-        const stationName = stationSelect.options[stationSelect.selectedIndex].text;
-        nowPlaying.textContent = `Now Playing: ${stationName}`;
-        state.currentStation = stationSelect.value;
+    async function fetchMetadata(streamUrl) {
+        if (!nowPlayingTrack) return;
+
+        try {
+            const response = await fetch(`${PROXY_URL}metadata?url=${encodeURIComponent(streamUrl)}`);
+            const data = await response.json();
+
+            if (data.title) {
+                nowPlayingTrack.textContent = data.title;
+
+                // Add marquee if text is long enough to overflow
+                if (nowPlayingTrack.scrollWidth > nowPlayingTrack.parentElement.clientWidth) {
+                    nowPlayingTrack.classList.add('marquee-active');
+                } else {
+                    nowPlayingTrack.classList.remove('marquee-active');
+                }
+            } else {
+                // Fallback if stream doesn't support metadata
+                const stationName = stationSelect.options[stationSelect.selectedIndex]?.text.replace(/^★\s/, '') || 'Live Stream';
+                nowPlayingTrack.textContent = stationName;
+                nowPlayingTrack.classList.remove('marquee-active');
+            }
+        } catch (error) {
+            console.error("Failed to fetch stream metadata:", error);
+            nowPlayingTrack.textContent = stationSelect.options[stationSelect.selectedIndex]?.text.replace(/^★\s/, '');
+            nowPlayingTrack.classList.remove('marquee-active');
+        }
+
+        // Sync the OS media session lockscreen
         updateMediaSession();
+    }
+
+    function updateNowPlaying() {
+        if (!nowPlayingStation || !nowPlayingTrack) return;
+
+        const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+        if (!selectedOption) return;
+
+        const stationName = selectedOption.text.replace(/^★\s/, '');
+        nowPlayingStation.textContent = `Now Playing: ${stationName}`;
+        state.currentStation = stationSelect.value;
+
+        // Indicate loading while fetching
+        nowPlayingTrack.textContent = "Loading string info...";
+        nowPlayingTrack.classList.remove('marquee-active');
+
+        // Clear existing interval
+        if (state.metadataInterval) {
+            clearInterval(state.metadataInterval);
+            state.metadataInterval = null;
+        }
+
+        const streamUrl = stationSelect.value;
+
+        // Fetch immediately
+        fetchMetadata(streamUrl);
+
+        // Then poll every 12 seconds
+        state.metadataInterval = setInterval(() => {
+            if (state.isPlaying) {
+                fetchMetadata(streamUrl);
+            }
+        }, 12000);
     }
 
     function cleanup() {
@@ -298,6 +377,10 @@ export function initPlayer(state) {
         if (state.animationFrameId) {
             cancelAnimationFrame(state.animationFrameId);
             state.animationFrameId = null;
+        }
+        if (state.metadataInterval) {
+            clearInterval(state.metadataInterval);
+            state.metadataInterval = null;
         }
     }
 }
