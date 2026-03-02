@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 -   **UI/UX:** Fixed an issue where very long track names (like continuous DJ mixes or Progressive Psytrance titles) would stretch the glassmorphism player layout horizontally.
+-   **Backend:** Prevented the frontend from polling the `/metadata` endpoint when playback is paused or stopped to save unnecessary Cloudflare requests.
 -   **Codebase:** Cleaned up unused CSS rulesets.
 
 ### Documentation
