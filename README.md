@@ -9,9 +9,9 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 
 ![Radio Stream Player Screenshot](docs/images/app-screenshot.webp)
 
-**[🔴 Live Demo](http://radio.djay.ca/)**
+**[🔴 Live Demo](https://radio.djay.ca/)**
 
-*Note: The live demo is hosted via HTTP to support "Mixed Content" playback. Many radio streams still use HTTP, which modern browsers block if the site is loaded via HTTPS.*
+*Note: The live demo is now securely hosted via HTTPS! It utilizes a custom Cloudflare Worker proxy (`api.djay.ca`) to seamlessly tunnel legacy HTTP radio streams and extract track metadata without browser security warnings.*
 
 ## ✨ Features
 
@@ -28,6 +28,8 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 - **Light & Dark Themes**: Automatically detects the user's system preference and allows manual toggling.
 - **Personalization**: Customize the player with your own background images or choose from curated presets.
 - **Favorites System**: Save your top stations for quick access.
+- **Backend Streaming Proxy**: Natively bypasses "Mixed Content" warnings by routing insecure HTTP radio streams through a secure Cloudflare Worker.
+- **Live Metadata Extraction**: Displays real-time "Now Playing" track and artist information fetched directly from the streams.
 - **Media Integration**: Displays station info on your OS lock screen and supports hardware media keys (Play/Pause/Next/Prev).
 - **Pop-out Player**: Open the player in a separate, compact window for easy multitasking.
 - **Accessible**: Built with accessibility in mind, featuring screen reader support and full keyboard navigation.

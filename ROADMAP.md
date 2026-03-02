@@ -49,8 +49,9 @@ This document outlines the future direction and planned features for the Radio S
         -   **[x]** Add a mechanism (e.g., link to Google Form or GitHub Issue) for users to suggest new radio stations to be added to the default list.
     -   **[x] Issue Reporting:**
         -   **[x]** Add a "Report Broken Stream" button that allows users to flag stations that are offline or malfunctioning.
--   **[ ] Stream Metadata Display:**
-    -   Investigate methods (e.g., ICY metadata) to fetch and display the currently playing song and artist information from the stream, where available. This may require a server-side proxy for CORS reasons.
+-   **[x] Stream Metadata Display:**
+    -   **[x]** Leverage the Cloudflare Worker proxy (`api.djay.ca`) to parse ICY metadata headers from the stream without causing audio artifacts in the frontend.
+    -   **[x]** Implement frontend polling (`player.js`) and UI updates (scrolling marquee) to display the currently playing song and artist.
 
 ---
 
@@ -62,11 +63,10 @@ This document outlines the future direction and planned features for the Radio S
     -   Refactor the simple global `radioStreamState` object into a more robust state management pattern (e.g., a class-based service or a small pub/sub library) to better handle application complexity.
 -   **[ ] Build Process Integration:**
     -   Introduce a modern build tool like Vite or Parcel to enable features like ES modules, CSS pre-processing, and code minification for production builds.
--   **[ ] Backend Service (Cloudflare Worker Proxy):**
-    -   Implement a "Universal Proxy" using a Cloudflare Worker to tunnel insecure HTTP streams over HTTPS.
-    -   **Goal:** Allow the application to be hosted securely (HTTPS) while still playing legacy HTTP streams, solving "Mixed Content" issues.
-    -   **Implementation:** Use a single Worker script that accepts a target URL parameter (e.g., `?url=http://...`) and pipes the response back to the client.
-    -   **Metadata:** Extend the worker to potentially parse ICY metadata server-side to avoid CORS issues with headers.
+-   **[x] Backend Service (Cloudflare Worker Proxy):**
+    -   **[x]** Implemented a secure proxy using a Cloudflare Worker (`api.djay.ca`) to tunnel insecure HTTP streams over HTTPS.
+    -   **[x] Goal achieved:** Application is hosted securely on GitHub Pages with HTTPS while safely playing legacy HTTP streams, solving "Mixed Content" issues.
+    -   **[x] Metadata:** Extended the worker with a `/metadata` endpoint to parse ICY metadata server-side, avoiding CORS issues and audio decoding artifacts in the browser.
 -   **[ ] Migration to Self-Hosted Backend (PHP/SQL):**
     -   Migrate away from static GitHub Pages hosting to a full LAMP/LEMP stack environment.
     -   **Goal:** Enable advanced features like user accounts, server-side playlist management, and a robust API.

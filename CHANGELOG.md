@@ -1,4 +1,4 @@
-Please update the `CHANGELOG.md` to reflect the recent changes we've made.# Changelog
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -10,12 +10,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+### Changed
+### Fixed
+### Documentation
+
+---
+
+## [1.2.0] - 2026-03-01
+
+### Added
+-   **Backend / Security:** Created a Cloudflare Worker script (`api.djay.ca`) to act as a secure proxy, tunneling insecure HTTP radio streams over HTTPS to bypass Mixed Content restrictions natively. The Worker also includes security checks to only allow traffic from the `djay.ca` and `localhost` domains.
+-   **Metadata:** Implemented a new `/metadata` endpoint on the Cloudflare Worker that securely fetches and parses `Icy-MetaData` blocks.
+-   **UI / UX:** Added a new "Now Playing" area to the player header. If the track name is too long, a CSS marquee animation is automatically applied.
+-   **State Management:** The global `radioStreamState` now tracks a `metadataInterval` polling timer.
 
 ### Changed
+-   **Audio Routing:** `player.js` now automatically detects `http://` stream URLs and dynamically routes them through the `api.djay.ca` proxy.
+-   **Metadata Polling:** `player.js` now polls the `/metadata` endpoint every 12 seconds to fetch the current track name and gracefully falls back to the station name if metadata is unavailable.
+-   **Media Integration:** The OS media lock screen (via Media Session API) now dynamically updates with the currently playing track name fetched from the proxy.
 
 ### Fixed
 
 ### Documentation
+-   **Roadmap:** Moved "Stream Metadata Display" and "Backend Service (Cloudflare Worker Proxy)" from Mid/Long-Term goals to Completed status.
+-   **Developer Guide:** Updated the Deployment Considerations section to reflect the active Cloudflare Worker architecture.
 
 ---
 

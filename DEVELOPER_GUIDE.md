@@ -158,16 +158,19 @@ Follow these steps to add a new visualization style (e.g., "neon").
 
 ## 5. Deployment Considerations
 
-### 5.1. Mixed Content (HTTP vs HTTPS)
+### 5.1. mixed Content & The Cloudflare Worker Proxy (`api.djay.ca`)
 
 Many online radio stations (especially older Shoutcast/Icecast servers) still broadcast over **HTTP**. Modern web browsers enforce a security policy called **Mixed Content**, which blocks insecure HTTP resources (like audio streams) from loading on a secure HTTPS page.
 
-To ensure maximum compatibility with all radio stations, this application is best deployed on **HTTP**. If deployed on HTTPS, only HTTPS streams will play; HTTP streams will fail silently or trigger a browser error.
+To solve this, the application natively utilizes a **Cloudflare Worker Proxy** hosted at `api.djay.ca`.
 
-**Future Roadmap (Cloudflare Workers):**
-We are planning to implement a **Cloudflare Worker** to act as a secure proxy. This will allow the main site to be loaded via HTTPS, while the Worker fetches the insecure HTTP stream on the server side and delivers it to the browser over HTTPS.
+**How it works:**
+1.  **Frontend Routing:** When `player.js` attempts to play a stream, it checks the URL. If the URL starts with `http://`, it intercepts the request and re-routes it through the secure proxy: `https://api.djay.ca/?url=http://...`.
+2.  **Worker Proxying:** The Cloudflare Worker receives the request, strips any `Icy-MetaData` headers (which cause audio playback artifacts in simple `<audio>` tags), fetches the insecure stream server-side, and pipes the pure audio response back to the browser over HTTPS with permissive CORS headers.
+3.  **Metadata Extraction:** The Worker also hosts a separate endpoint at `https://api.djay.ca/metadata?url=...`. The frontend polls this endpoint every 12 seconds. The Worker fetches the stream, explicitly asks for `Icy-MetaData`, reads only the stream headers to extract the `StreamTitle`, and returns it as a clean JSON object for the UI to display in the "Now Playing" marquee.
 
-*Note: Cloudflare Free Tier allows 100,000 requests/day. Since a continuous audio stream counts as only 1 request, this is a highly viable solution.*
+**Worker Security:**
+The Worker script checks the `Origin` and `Referer` headers. It will return a `403 Forbidden` response to any request that does not originate from `localhost` or a `*.djay.ca` domain, preventing abuse of the proxy bandwidth.
 
 ## 6. Release Process
 
