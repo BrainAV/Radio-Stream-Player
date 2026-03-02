@@ -84,7 +84,14 @@ function updateNowPlaying() {
 
     const streamUrl = stationSelect.value;
 
-    fetchMetadata(streamUrl);
+    if (isPlaying) {
+        nowPlayingTrack.textContent = "Loading track info...";
+        nowPlayingTrack.classList.remove('marquee-active');
+        fetchMetadata(streamUrl);
+    } else {
+        nowPlayingTrack.textContent = "Ready to play...";
+        nowPlayingTrack.classList.remove('marquee-active');
+    }
 
     metadataInterval = setInterval(() => {
         if (isPlaying) fetchMetadata(streamUrl);

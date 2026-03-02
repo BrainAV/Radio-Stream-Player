@@ -344,11 +344,7 @@ export function initPlayer(state) {
         nowPlayingStation.textContent = `Now Playing: ${stationName}`;
         state.currentStation = stationSelect.value;
 
-        // Indicate loading while fetching
-        nowPlayingTrack.textContent = "Loading string info...";
-        nowPlayingTrack.classList.remove('marquee-active');
-
-        // Clear existing interval
+        // Clear existing interval to prevent multiple polling loops
         if (state.metadataInterval) {
             clearInterval(state.metadataInterval);
             state.metadataInterval = null;
@@ -356,8 +352,18 @@ export function initPlayer(state) {
 
         const streamUrl = stationSelect.value;
 
-        // Fetch immediately
-        fetchMetadata(streamUrl);
+        if (state.isPlaying) {
+            // Indicate loading while fetching
+            nowPlayingTrack.textContent = "Loading track info...";
+            nowPlayingTrack.classList.remove('marquee-active');
+            // Fetch immediately
+            fetchMetadata(streamUrl);
+        } else {
+            nowPlayingTrack.textContent = "Ready to play...";
+            nowPlayingTrack.classList.remove('marquee-active');
+            // Sync the OS media session lockscreen even if we just have the station name
+            updateMediaSession();
+        }
 
         // Then poll every 12 seconds
         state.metadataInterval = setInterval(() => {
