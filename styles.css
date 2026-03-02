@@ -27,7 +27,8 @@ body {
     background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1950');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Keeps the background static during scroll */
+    background-attachment: fixed;
+    /* Keeps the background static during scroll */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     transition: background-color 0.3s, color 0.3s;
@@ -76,7 +77,8 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.1rem;
-    line-height: 1; /* Ensures button height is consistent */
+    line-height: 1;
+    /* Ensures button height is consistent */
 }
 
 .radiostream-player {
@@ -92,7 +94,8 @@ body {
     max-width: 600px;
     min-width: 400px;
     margin: 0 auto;
-    color: var(--text-color); /* This will be overridden by dark theme if active */
+    color: var(--text-color);
+    /* This will be overridden by dark theme if active */
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     display: flex;
@@ -102,18 +105,18 @@ body {
 
 .dark-theme .tool-header,
 .dark-theme .radiostream-player {
-    background: rgba(31, 41, 55, 0.3); /* Darker glass for dark mode */
+    background: rgba(31, 41, 55, 0.3);
+    /* Darker glass for dark mode */
 }
 
 .dark-theme .radiostream-player {
-    color: #e5e7eb; /* Use a lighter text color for better contrast on the dark glass */
+    color: #e5e7eb;
+    /* Use a lighter text color for better contrast on the dark glass */
 }
 
 /* Ensure the popout window shares the same background as the main page for a consistent glass effect */
-body.popout-body {
-    /* We don't need to override anything. The default body style with the 
-       background image will apply, which is what we want. This rule can be removed. */
-}
+/* We don't need to override anything. The default body style with the 
+   background image will apply, which is what we want. */
 
 .popout-player {
     /* Glassmorphism effect for the popout player */
@@ -139,7 +142,8 @@ body.popout-body {
 }
 
 .dark-theme .popout-player {
-    background: rgba(31, 41, 55, 0.3); /* Darker glass for dark mode */
+    background: rgba(31, 41, 55, 0.3);
+    /* Darker glass for dark mode */
 }
 
 
@@ -351,7 +355,8 @@ body.popout-body {
 /* Neon VU Style */
 .vu-neon .vu-meter {
     width: 25px;
-    background: #000; /* Deep black for contrast */
+    background: #000;
+    /* Deep black for contrast */
     border: 1px solid #333;
     box-shadow: inset 0 0 10px #000;
 }
@@ -409,7 +414,8 @@ body.popout-body {
 
 .control-bar {
     display: flex;
-    align-items: center; /* Vertically align all items in the bar */
+    align-items: center;
+    /* Vertically align all items in the bar */
     gap: 10px;
     width: 100%;
 }
@@ -418,7 +424,8 @@ body.popout-body {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-grow: 1; /* Allow the volume control to take up remaining space */
+    flex-grow: 1;
+    /* Allow the volume control to take up remaining space */
     min-width: 100px;
 }
 
@@ -439,8 +446,10 @@ body.popout-body {
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    height: 6px; /* Make the track slimmer */
-    background: transparent; /* Background will be set by JS */
+    height: 6px;
+    /* Make the track slimmer */
+    background: transparent;
+    /* Background will be set by JS */
     border-radius: 3px;
     outline: none;
     cursor: pointer;
@@ -449,14 +458,17 @@ body.popout-body {
 .volume-control input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 18px; /* Slightly smaller thumb */
+    width: 18px;
+    /* Slightly smaller thumb */
     height: 18px;
     background: var(--primary-color);
     border-radius: 50%;
     cursor: pointer;
-    border: 3px solid var(--card-bg); /* Creates a "halo" effect that looks good on the glass */
+    border: 3px solid var(--card-bg);
+    /* Creates a "halo" effect that looks good on the glass */
     box-shadow: var(--card-shadow);
-    margin-top: -6px; /* Center the thumb on the track */
+    margin-top: -6px;
+    /* Center the thumb on the track */
     transition: transform 0.2s ease;
 }
 
@@ -512,12 +524,18 @@ body.popout-body {
 /* Marquee animation class applied via JS when text is too long */
 .marquee-active {
     animation: marquee 15s linear infinite;
-    padding-right: 50px; /* Space before it repeats */
+    padding-right: 50px;
+    /* Space before it repeats */
 }
 
 @keyframes marquee {
-    0%   { transform: translateX(10%); }
-    100% { transform: translateX(-100%); }
+    0% {
+        transform: translateX(10%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 /* Generic button style for standalone */
@@ -534,6 +552,7 @@ body.popout-body {
     font-size: 1rem;
     transition: background-color 0.2s;
 }
+
 .console-btn:hover {
     background-color: var(--primary-hover);
 }
@@ -551,7 +570,8 @@ body.popout-body {
 }
 
 #play-pause-btn {
-    padding: 10px; /* Make the play/pause button square */
+    padding: 10px;
+    /* Make the play/pause button square */
 }
 
 /* Favorite Button */
@@ -563,7 +583,8 @@ body.popout-body {
 }
 
 #favorite-btn.active {
-    color: #fbbf24; /* Amber/Gold color */
+    color: #fbbf24;
+    /* Amber/Gold color */
     border-color: #fbbf24;
 }
 
@@ -580,17 +601,20 @@ body.popout-body {
 }
 
 .popout-player .console-btn {
-    padding: 8px; /* Make buttons smaller */
+    padding: 8px;
+    /* Make buttons smaller */
 }
 
 .popout-player .volume-control {
-    min-width: 80px; /* Ensure volume slider has some space */
+    min-width: 80px;
+    /* Ensure volume slider has some space */
 }
 
 .popout-player .volume-control input[type="range"]::-webkit-slider-thumb {
     width: 16px;
     height: 16px;
-    margin-top: -5px; /* Re-center smaller thumb on track */
+    margin-top: -5px;
+    /* Re-center smaller thumb on track */
 }
 
 .popout-player .volume-control input[type="range"]::-moz-range-thumb {
@@ -750,9 +774,17 @@ body.popout-body {
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-    50% { box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); }
-    100% { box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    0% {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 }
 
 /* Hover effects */
@@ -807,7 +839,8 @@ body.popout-body {
     max-width: 400px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
-    max-height: 90vh; /* Prevent modal from exceeding viewport height */
+    max-height: 90vh;
+    /* Prevent modal from exceeding viewport height */
     display: flex;
     flex-direction: column;
 }
@@ -822,8 +855,10 @@ body.popout-body {
 }
 
 .settings-body {
-    overflow-y: auto; /* Enable vertical scrolling for the settings body */
-    flex-grow: 1; /* Allow the body to fill the available space */
+    overflow-y: auto;
+    /* Enable vertical scrolling for the settings body */
+    flex-grow: 1;
+    /* Allow the body to fill the available space */
 }
 
 .settings-header h3 {
@@ -907,6 +942,36 @@ body.popout-body {
     margin-right: 10px;
 }
 
+.station-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.edit-btn,
+.delete-btn {
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.edit-btn {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.edit-btn:hover {
+    background: var(--primary-hover);
+}
+
 .delete-btn {
     background: #ef4444;
     color: white;
@@ -975,7 +1040,7 @@ body.popout-body {
 
 .bg-preset-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .bg-preset-btn.active {

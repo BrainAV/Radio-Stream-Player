@@ -49,7 +49,7 @@ function initSettings() {
     if (themeSelect) {
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        
+
         // Function to apply theme
         const applyTheme = (theme) => {
             document.documentElement.classList.toggle('dark-theme', theme === 'dark-theme');
@@ -82,7 +82,7 @@ function initSettings() {
     if (favoritesOnlyCheck) {
         const savedFavOnly = localStorage.getItem('favoritesOnly') === 'true';
         favoritesOnlyCheck.checked = savedFavOnly;
-        
+
         // Initial state: Disable favorite button if filter is active
         if (favoriteBtn) favoriteBtn.disabled = savedFavOnly;
 
@@ -99,10 +99,10 @@ function initSettings() {
 
         const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
         const allStations = [...defaultStations, ...customStations];
-        
+
         // Extract unique genres
         const genres = new Set(allStations.map(s => s.genre).filter(g => g));
-        
+
         // Keep "All" and append sorted genres
         genreSelect.innerHTML = '<option value="all">All Genres</option>';
         Array.from(genres).sort().forEach(genre => {
@@ -130,7 +130,7 @@ function initSettings() {
     // Render Custom Stations List
     function renderCustomStations() {
         if (!customStationsList) return;
-        
+
         const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
         customStationsList.innerHTML = '';
 
@@ -144,9 +144,28 @@ function initSettings() {
             item.className = 'station-item';
             item.innerHTML = `
                 <span class="station-name" title="${station.url}">${station.name} ${station.genre ? `(${station.genre})` : ''}</span>
-                <button class="delete-btn" data-index="${index}" aria-label="Delete station">&times;</button>
+                <div class="station-actions">
+                    <button class="edit-btn" data-index="${index}" aria-label="Edit station">✎</button>
+                    <button class="delete-btn" data-index="${index}" aria-label="Delete station">&times;</button>
+                </div>
             `;
             customStationsList.appendChild(item);
+        });
+
+        // Add edit listeners
+        customStationsList.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index, 10);
+                const stations = JSON.parse(localStorage.getItem('customStations')) || [];
+                const station = stations[index];
+
+                nameInput.value = station.name;
+                urlInput.value = station.url;
+                if (genreInput) genreInput.value = station.genre || '';
+
+                addStationBtn.textContent = 'Save';
+                addStationBtn.dataset.editingIndex = index;
+            });
         });
 
         // Add delete listeners
@@ -156,6 +175,19 @@ function initSettings() {
                 const stations = JSON.parse(localStorage.getItem('customStations')) || [];
                 stations.splice(index, 1);
                 localStorage.setItem('customStations', JSON.stringify(stations));
+
+                // Reset edit state if deleting the item currently being edited
+                if (addStationBtn.dataset.editingIndex && parseInt(addStationBtn.dataset.editingIndex, 10) === index) {
+                    nameInput.value = '';
+                    urlInput.value = '';
+                    if (genreInput) genreInput.value = '';
+                    delete addStationBtn.dataset.editingIndex;
+                    addStationBtn.textContent = 'Add';
+                } else if (addStationBtn.dataset.editingIndex && parseInt(addStationBtn.dataset.editingIndex, 10) > index) {
+                    // Shift the editing index down by 1 if we deleted an item before the editing item
+                    addStationBtn.dataset.editingIndex = parseInt(addStationBtn.dataset.editingIndex, 10) - 1;
+                }
+
                 populateGenres(); // Update genres in case the last station of a genre was deleted
                 renderCustomStations();
                 window.dispatchEvent(new CustomEvent('stationListUpdated'));
@@ -186,12 +218,12 @@ function initSettings() {
                 btn.style.backgroundImage = `url('${preset.url}')`;
                 btn.title = preset.name;
                 btn.ariaLabel = `Set background to ${preset.name}`;
-                
+
                 btn.onclick = () => {
                     document.body.style.backgroundImage = `url('${preset.url}')`;
                     localStorage.setItem('customBackground', preset.url);
                     bgUrlInput.value = preset.url;
-                    
+
                     // Update active state
                     Array.from(bgPresetsContainer.children).forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
@@ -210,7 +242,7 @@ function initSettings() {
             if (url) {
                 localStorage.setItem('customBackground', url);
                 document.body.style.backgroundImage = `url('${url}')`;
-                
+
                 // Update presets active state (deselect all if custom URL doesn't match)
                 if (bgPresetsContainer) {
                     Array.from(bgPresetsContainer.children).forEach(b => {
@@ -225,7 +257,7 @@ function initSettings() {
             bgUrlInput.value = '';
             // Reset to default background from CSS
             document.body.style.backgroundImage = '';
-            
+
             // Reset presets to default (first one)
             if (bgPresetsContainer && bgPresetsContainer.children[0]) {
                 Array.from(bgPresetsContainer.children).forEach(b => b.classList.remove('active'));
@@ -243,9 +275,18 @@ function initSettings() {
 
             if (name && url) {
                 const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
-                customStations.push({ name, url, genre });
+
+                if (addStationBtn.dataset.editingIndex !== undefined) {
+                    const index = parseInt(addStationBtn.dataset.editingIndex, 10);
+                    customStations[index] = { name, url, genre };
+                    delete addStationBtn.dataset.editingIndex;
+                    addStationBtn.textContent = 'Add';
+                } else {
+                    customStations.push({ name, url, genre });
+                }
+
                 localStorage.setItem('customStations', JSON.stringify(customStations));
-                
+
                 // Clear inputs
                 nameInput.value = '';
                 urlInput.value = '';
@@ -255,7 +296,7 @@ function initSettings() {
                 renderCustomStations();
                 // Notify player to refresh list
                 window.dispatchEvent(new CustomEvent('stationListUpdated'));
-                
+
                 // Optional: Visual feedback could go here
             }
         });
@@ -265,7 +306,7 @@ function initSettings() {
     if (settingsBtn && settingsModal && closeSettingsBtn) {
         settingsBtn.addEventListener('click', openSettings);
         closeSettingsBtn.addEventListener('click', closeSettings);
-        
+
         // Close when clicking outside the content
         settingsModal.addEventListener('click', (e) => {
             if (e.target === settingsModal) closeSettings();
