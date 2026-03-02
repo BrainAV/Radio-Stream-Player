@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 -   **Custom Stations:** Added the ability to edit the Name, URL, and Genre of existing custom stations directly within the Settings modal.
+-   **Content:** Added "Hirsch Radio Psytrance" and "Hirsch Radio Progressive" to the default stations list.
 
 ### Changed
 -   **Audio Routing:** `player.js` now routes *all* streams (both HTTP and HTTPS) through the Cloudflare proxy (`api.djay.ca`). This ensures the Web Audio API always receives the correct `Access-Control-Allow-Origin: *` headers required to render the VU meters without CORS errors.

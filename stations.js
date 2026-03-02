@@ -9,5 +9,7 @@ export const stations = [
     { name: "Party~Vibe | Psychedelic Trance Radio", url: "https://www.partyvibe.com:8062/;listen.pls?sid=1", genre: "Psytrance", country: "UK" },
     { name: "DI.FM - Vocal Trance", url: "https://listen.di.fm/vocaltrance", genre: "Vocal Trance", country: "USA" },
     { name: "Radiozora - Psytrance", url: "https://2026.radiozora.fm/stream/", genre: "Psytrance", country: "Hungary" },
-    { name: "A State of Trance (ASOT)", url: "https://streaming.radio.co/s0cf4c8c63/listen", genre: "Trance", country: "Netherlands" }
+    { name: "A State of Trance (ASOT)", url: "https://streaming.radio.co/s0cf4c8c63/listen", genre: "Trance", country: "Netherlands" },
+    { name: "Hirsch Radio Psytrance", url: "https://hirschmilch.de:7501/psytrance.mp3", genre: "Psytrance", country: "Germany" },
+    { name: "Hirsch Radio Progressive", url: "https://hirschmilch.de:7501/progressive.mp3", genre: "Progressive", country: "Germany" }
 ];
