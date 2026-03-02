@@ -7,8 +7,7 @@
 
 A sleek, modern, and feature-rich web-based radio stream player built with vanilla JavaScript and the Web Audio API. It provides a great listening experience with dynamic audio visualizations.
 
- 
-*(Note: This is a sample GIF. You can replace it with a real screenshot or GIF of your application.)*
+![Radio Stream Player Screenshot](docs/images/app-screenshot.webp)
 
 **[🔴 Live Demo](http://radio.djay.ca/)**
 
