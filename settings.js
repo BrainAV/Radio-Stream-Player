@@ -312,6 +312,194 @@ function initSettings() {
             if (e.target === settingsModal) closeSettings();
         });
     }
+
+    // Settings Tabs Logic
+    const tabBtns = document.querySelectorAll('.settings-tab-btn');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => {
+                c.style.display = 'none';
+                c.classList.remove('active');
+            });
+
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            // Show corresponding content
+            const tabId = btn.getAttribute('data-tab');
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+                targetContent.classList.add('active');
+            }
+        });
+    });
+
+    // --- Radio Browser Directory Integration ---
+    const rbSearchBtn = document.getElementById('rb-search-btn');
+    const rbSearchInput = document.getElementById('rb-search-input');
+    const rbSearchBy = document.getElementById('rb-search-by');
+    const rbResultsContainer = document.getElementById('rb-results-container');
+    let bestRadioBrowserApiUrl = null;
+
+    // 1. Discover the best API server
+    async function discoverRadioBrowserApi() {
+        if (bestRadioBrowserApiUrl) return bestRadioBrowserApiUrl;
+
+        try {
+            // Use DNS-over-HTTPS as recommended by Radio Browser docs
+            const response = await fetch('https://de1.api.radio-browser.info/json/servers');
+            if (!response.ok) throw new Error('Failed to fetch API servers');
+
+            const servers = await response.json();
+            if (servers && servers.length > 0) {
+                // Pick a random server from the available list to load balance
+                const randomServer = servers[Math.floor(Math.random() * servers.length)];
+                bestRadioBrowserApiUrl = `https://${randomServer.name}`;
+                console.log('Selected Radio Browser API:', bestRadioBrowserApiUrl);
+                return bestRadioBrowserApiUrl;
+            }
+        } catch (error) {
+            console.error('Error discovering Radio Browser servers:', error);
+            // Fallback to a known reliable server
+            bestRadioBrowserApiUrl = 'https://de1.api.radio-browser.info';
+            return bestRadioBrowserApiUrl;
+        }
+    }
+
+    // 2. Perform the search
+    async function searchRadioBrowser() {
+        const searchTerm = rbSearchInput.value.trim();
+        if (!searchTerm) return;
+
+        const searchType = rbSearchBy.value; // 'tag', 'name', or 'country'
+        let endpoint = '';
+
+        if (searchType === 'tag') {
+            endpoint = `/json/stations/search?tag=${encodeURIComponent(searchTerm)}&limit=50&hidebroken=true&order=clickcount&reverse=true`;
+        } else if (searchType === 'name') {
+            endpoint = `/json/stations/search?name=${encodeURIComponent(searchTerm)}&limit=50&hidebroken=true&order=clickcount&reverse=true`;
+        } else if (searchType === 'country') {
+            endpoint = `/json/stations/search?country=${encodeURIComponent(searchTerm)}&limit=50&hidebroken=true&order=clickcount&reverse=true`;
+        }
+
+        rbResultsContainer.innerHTML = '<div class="rb-empty-state">Searching...</div>';
+        rbSearchBtn.disabled = true;
+
+        try {
+            const apiUrl = await discoverRadioBrowserApi();
+            const response = await fetch(`${apiUrl}${endpoint}`);
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const stations = await response.json();
+            renderRadioBrowserResults(stations);
+        } catch (error) {
+            console.error('Error fetching from Radio Browser:', error);
+            rbResultsContainer.innerHTML = `<div class="rb-empty-state" style="color: #ef4444;">Error fetching results. Please try again.</div>`;
+        } finally {
+            rbSearchBtn.disabled = false;
+        }
+    }
+
+    // 3. Render the results
+    function renderRadioBrowserResults(stations) {
+        rbResultsContainer.innerHTML = '';
+
+        if (!stations || stations.length === 0) {
+            rbResultsContainer.innerHTML = '<div class="rb-empty-state">No stations found. Try a different search term.</div>';
+            return;
+        }
+
+        stations.forEach(station => {
+            // Format metadata
+            let metaString = '';
+            if (station.tags) {
+                // Show up to 3 tags
+                const tags = station.tags.split(',').slice(0, 3).join(', ');
+                metaString += tags;
+            }
+            if (station.country) metaString += (metaString ? ' • ' : '') + station.country;
+            if (station.bitrate && station.bitrate > 0) metaString += (metaString ? ' • ' : '') + `${station.bitrate} kbps`;
+
+            const item = document.createElement('div');
+            item.className = 'rb-result-item';
+            item.innerHTML = `
+                <div class="rb-result-info">
+                    <div class="rb-result-name" title="${station.name}">${station.name}</div>
+                    <div class="rb-result-meta" title="${metaString}">${metaString}</div>
+                </div>
+                <button class="rb-add-btn" data-url="${station.url_resolved}" data-name="${station.name}" data-tags="${station.tags}">Add</button>
+            `;
+            rbResultsContainer.appendChild(item);
+        });
+
+        // Add event listeners for the "Add" buttons
+        rbResultsContainer.querySelectorAll('.rb-add-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetBtn = e.target;
+                const name = targetBtn.getAttribute('data-name');
+                const url = targetBtn.getAttribute('data-url');
+
+                // Get the first tag as the genre (or default to 'Radio')
+                const allTags = targetBtn.getAttribute('data-tags');
+                let genre = 'Radio';
+                if (allTags && allTags.trim() !== '') {
+                    genre = allTags.split(',')[0].trim();
+                    // Capitalize first letter
+                    genre = genre.charAt(0).toUpperCase() + genre.slice(1);
+                }
+
+                addStationFromDirectory(name, url, genre);
+
+                // Visual feedback
+                const originalText = targetBtn.textContent;
+                targetBtn.textContent = 'Added ✓';
+                targetBtn.style.backgroundColor = 'var(--primary-color)';
+                targetBtn.style.color = 'white';
+
+                setTimeout(() => {
+                    targetBtn.textContent = originalText;
+                    targetBtn.style.backgroundColor = 'transparent';
+                    targetBtn.style.color = 'var(--primary-color)';
+                }, 2000);
+            });
+        });
+    }
+
+    // 4. Add to Custom Stations
+    function addStationFromDirectory(name, url, genre) {
+        const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
+
+        // Avoid duplicate exact URLs
+        const exists = customStations.some(s => s.url === url);
+        if (!exists) {
+            customStations.push({ name, url, genre });
+            localStorage.setItem('customStations', JSON.stringify(customStations));
+
+            // Re-render the custom stations UI
+            populateGenres();
+            renderCustomStations();
+
+            // Notify player to refresh the dropdown list
+            window.dispatchEvent(new CustomEvent('stationListUpdated'));
+        }
+    }
+
+    // Bind search UI events
+    if (rbSearchBtn && rbSearchInput) {
+        rbSearchBtn.addEventListener('click', searchRadioBrowser);
+        rbSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchRadioBrowser();
+            }
+        });
+    }
 }
 
 function openSettings() {

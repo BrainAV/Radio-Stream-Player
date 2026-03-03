@@ -79,62 +79,105 @@
                 <h3>Settings</h3>
                 <button id="close-settings-btn" class="close-btn">&times;</button>
             </div>
+            <div class="settings-tabs">
+                <button class="settings-tab-btn active" data-tab="general-tab">General</button>
+                <button class="settings-tab-btn" data-tab="custom-tab">My Stations</button>
+                <button class="settings-tab-btn" data-tab="directory-tab">Directory</button>
+            </div>
+
             <div class="settings-body">
-                <div class="setting-item">
-                    <label for="theme-select">Theme</label>
-                    <select id="theme-select">
-                        <option value="light-theme">Light</option>
-                        <option value="dark-theme">Dark</option>
-                    </select>
-                </div>
-                <div class="setting-item">
-                    <div class="setting-checkbox">
-                        <input type="checkbox" id="favorites-only-check">
-                        <label for="favorites-only-check">Show Favorites Only</label>
+                <!-- General Settings Tab -->
+                <div id="general-tab" class="settings-tab-content active">
+                    <div class="setting-item">
+                        <label for="theme-select">Theme</label>
+                        <select id="theme-select">
+                            <option value="light-theme">Light</option>
+                            <option value="dark-theme">Dark</option>
+                        </select>
                     </div>
-                    <label for="genre-select">Filter by Genre</label>
-                    <select id="genre-select">
-                        <option value="all">All Genres</option>
-                    </select>
-                </div>
-                <div class="setting-item">
-                    <label for="vu-style-select">Visualizer Style</label>
-                    <select id="vu-style-select">
-                        <!-- Options populated by settings.js -->
-                    </select>
-                </div>
-                <div class="setting-item">
-                    <label>Personalization</label>
-                    <div class="bg-presets-label">Presets</div>
-                    <div id="bg-presets-container"></div>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="url" id="bg-url-input" class="settings-input" placeholder="Background Image URL"
-                            style="margin-bottom: 0;">
-                        <button id="set-bg-btn" class="console-btn"
-                            style="padding: 5px 15px; white-space: nowrap;">Set</button>
-                        <button id="clear-bg-btn" class="console-btn"
-                            style="padding: 5px 15px; white-space: nowrap; background-color: var(--border-color); color: var(--text-color);">Clear</button>
+                    <div class="setting-item">
+                        <div class="setting-checkbox">
+                            <input type="checkbox" id="favorites-only-check">
+                            <label for="favorites-only-check">Show Favorites Only</label>
+                        </div>
+                        <label for="genre-select">Filter by Genre</label>
+                        <select id="genre-select">
+                            <option value="all">All Genres</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="vu-style-select">Visualizer Style</label>
+                        <select id="vu-style-select">
+                            <!-- Options populated by settings.js -->
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Personalization</label>
+                        <div class="bg-presets-label">Presets</div>
+                        <div id="bg-presets-container"></div>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="url" id="bg-url-input" class="settings-input"
+                                placeholder="Background Image URL" style="margin-bottom: 0;">
+                            <button id="set-bg-btn" class="console-btn"
+                                style="padding: 5px 15px; white-space: nowrap;">Set</button>
+                            <button id="clear-bg-btn" class="console-btn"
+                                style="padding: 5px 15px; white-space: nowrap; background-color: var(--border-color); color: var(--text-color);">Clear</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>Community & Feedback</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Station+Suggestion&body=Name:+%0AURL:+%0AGenre:+"
+                                target="_blank" class="settings-link">Suggest a New Station</a>
+                            <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Broken+Stream+Report&body=Station+Name:+"
+                                target="_blank" class="settings-link">Report a Broken Stream</a>
+                        </div>
                     </div>
                 </div>
-                <div class="setting-item">
-                    <label>Manage Custom Stations</label>
-                    <div id="custom-stations-list" class="custom-stations-list"></div>
-                    <input type="text" id="custom-station-name" class="settings-input" placeholder="Station Name">
-                    <input type="text" id="custom-station-genre" class="settings-input" placeholder="Genre (Optional)">
-                    <div style="display: flex; gap: 10px;">
-                        <input type="url" id="custom-station-url" class="settings-input"
-                            placeholder="Stream URL (https://...)" style="margin-bottom: 0;">
-                        <button id="add-station-btn" class="console-btn"
-                            style="padding: 5px 15px; white-space: nowrap;">Add</button>
+
+                <!-- Custom Stations Tab -->
+                <div id="custom-tab" class="settings-tab-content" style="display: none;">
+                    <div class="setting-item">
+                        <label>Manage Custom Stations</label>
+                        <div id="custom-stations-list" class="custom-stations-list"></div>
+                        <input type="text" id="custom-station-name" class="settings-input" placeholder="Station Name">
+                        <input type="text" id="custom-station-genre" class="settings-input"
+                            placeholder="Genre (Optional)">
+                        <div style="display: flex; gap: 10px;">
+                            <input type="url" id="custom-station-url" class="settings-input"
+                                placeholder="Stream URL (https://...)" style="margin-bottom: 0;">
+                            <button id="add-station-btn" class="console-btn"
+                                style="padding: 5px 15px; white-space: nowrap;">Add</button>
+                        </div>
                     </div>
                 </div>
-                <div class="setting-item">
-                    <label>Community & Feedback</label>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Station+Suggestion&body=Name:+%0AURL:+%0AGenre:+"
-                            target="_blank" class="settings-link">Suggest a New Station</a>
-                        <a href="https://github.com/BrainAV/Radio-Stream-Player/issues/new?title=Broken+Stream+Report&body=Station+Name:+"
-                            target="_blank" class="settings-link">Report a Broken Stream</a>
+
+                <!-- Directory Search Tab -->
+                <div id="directory-tab" class="settings-tab-content" style="display: none;">
+                    <div class="setting-item">
+                        <label>Radio Browser Directory</label>
+                        <p class="settings-description"
+                            style="font-size: 0.9em; margin-bottom: 10px; color: var(--text-color);">Search tens of
+                            thousands of community-driven radio stations.</p>
+
+                        <div class="directory-search-container" style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <select id="rb-search-by" class="settings-input" style="flex: 0 0 30%; margin-bottom: 0;">
+                                <option value="tag">Genre / Tag</option>
+                                <option value="name">Name</option>
+                                <option value="country">Country</option>
+                            </select>
+                            <input type="text" id="rb-search-input" class="settings-input" placeholder="Search..."
+                                style="flex: 1; margin-bottom: 0;">
+                            <button id="rb-search-btn" class="console-btn" style="padding: 5px 15px;">Search</button>
+                        </div>
+
+                        <div id="rb-results-container" class="rb-results-container"
+                            style="max-height: 300px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; background: rgba(0,0,0,0.1);">
+                            <div class="rb-empty-state"
+                                style="text-align: center; color: var(--text-color); opacity: 0.7; padding: 20px;">
+                                Enter a search term above to find new stations.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

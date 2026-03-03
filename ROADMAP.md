@@ -52,6 +52,11 @@ This document outlines the future direction and planned features for the Radio S
 -   **[x] Stream Metadata Display:**
     -   **[x]** Leverage the Cloudflare Worker proxy (`api.djay.ca`) to parse ICY metadata headers from the stream without causing audio artifacts in the frontend.
     -   **[x]** Implement frontend polling (`player.js`) and UI updates (scrolling marquee) to display the currently playing song and artist.
+-   **[ ] Radio Browser Directory Integration:**
+    -   **[ ]** Add a searchable directory using the `radio-browser.info` public API.
+    -   **[ ]** Build a UI in the Settings modal (or a new panel) to search by tag, name, or country.
+    -   **[ ]** Leverage the existing Cloudflare Proxy natively to tunnel any `http://` streams returned by the API securely. 
+    -   **[ ]** Allow users to easily add searched stations to their "Custom Stations" or "Favorites".
 
 ---
 
