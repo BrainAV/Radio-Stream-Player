@@ -236,6 +236,7 @@ export function initPlayer(state) {
         // Refresh list to show/hide stars
         populateStations();
         updateFavoriteBtnState();
+        window.dispatchEvent(new CustomEvent('stationListUpdated'));
     });
 
     volumeSlider.addEventListener('input', () => {

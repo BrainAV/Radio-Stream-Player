@@ -195,7 +195,63 @@ function initSettings() {
         });
     }
 
+    // Render Favorites List
+    function renderFavorites() {
+        const favoritesListContainer = document.getElementById('favorites-list');
+        if (!favoritesListContainer) return;
+
+        const favorites = JSON.parse(localStorage.getItem('favoriteStations')) || [];
+        const customStations = JSON.parse(localStorage.getItem('customStations')) || [];
+        const allStations = [...defaultStations, ...customStations];
+
+        favoritesListContainer.innerHTML = '';
+
+        if (favorites.length === 0) {
+            favoritesListContainer.innerHTML = '<div class="no-stations">No favorite stations added.</div>';
+            return;
+        }
+
+        favorites.forEach(favUrl => {
+            // Find the station name by URL
+            const station = allStations.find(s => s.url === favUrl);
+            const name = station ? station.name : 'Unknown Station';
+
+            const item = document.createElement('div');
+            item.className = 'station-item';
+            item.innerHTML = `
+                <span class="station-name" title="${favUrl}">★ ${name}</span>
+                <div class="station-actions">
+                    <button class="delete-btn remove-fav-btn" data-url="${favUrl}" aria-label="Remove from favorites">&times;</button>
+                </div>
+            `;
+            favoritesListContainer.appendChild(item);
+        });
+
+        // Add remove listeners
+        favoritesListContainer.querySelectorAll('.remove-fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const urlToRemove = e.target.dataset.url;
+                let currentFavorites = JSON.parse(localStorage.getItem('favoriteStations')) || [];
+                currentFavorites = currentFavorites.filter(url => url !== urlToRemove);
+
+                localStorage.setItem('favoriteStations', JSON.stringify(currentFavorites));
+
+                renderFavorites();
+                window.dispatchEvent(new CustomEvent('stationListUpdated'));
+
+                // If the player.js logic is managing the star button, dispatching the event
+                // will tell player.js to redraw its dropdown and update the favoriteBtn state.
+            });
+        });
+    }
+
+    renderFavorites();
     renderCustomStations();
+
+    // Listen for updates from player.js (e.g., when a user clicks the star button in main UI)
+    window.addEventListener('stationListUpdated', () => {
+        renderFavorites();
+    });
 
     // Personalization Logic
     if (bgUrlInput && setBgBtn && clearBgBtn) {
