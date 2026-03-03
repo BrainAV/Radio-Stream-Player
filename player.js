@@ -229,6 +229,20 @@ export function initPlayer(state) {
             favorites = favorites.filter(url => url !== currentUrl);
         } else {
             favorites.push(currentUrl);
+
+            // If we are favoriting a station that isn't in our current lists 
+            // (e.g., from Radio Browser before it was explicitly "Add"ed), 
+            // let's ensure it's saved to customStations so we know its name.
+            let customStations = JSON.parse(localStorage.getItem('customStations')) || [];
+            const allKnown = [...defaultStations, ...customStations];
+            if (!allKnown.some(s => s.url === currentUrl)) {
+                // Try to get the name from the currently selected option
+                const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+                const name = selectedOption ? selectedOption.text.replace(/^★\s/, '') : 'Saved Station';
+                const genre = selectedOption ? (selectedOption.dataset.genre || '') : '';
+                customStations.push({ name, url: currentUrl, genre });
+                localStorage.setItem('customStations', JSON.stringify(customStations));
+            }
         }
 
         localStorage.setItem('favoriteStations', JSON.stringify(favorites));

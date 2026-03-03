@@ -213,8 +213,21 @@ function initSettings() {
 
         favorites.forEach(favUrl => {
             // Find the station name by URL
+            let name = 'Unknown Station';
             const station = allStations.find(s => s.url === favUrl);
-            const name = station ? station.name : 'Unknown Station';
+
+            if (station && station.name) {
+                name = station.name;
+            } else {
+                // If it's a URL but not in the standard lists (maybe added directly from player via API search before settings reloaded)
+                // Try to extract a clean name from the URL itself as a fallback
+                try {
+                    const parsedUrl = new URL(favUrl);
+                    name = parsedUrl.hostname + parsedUrl.pathname;
+                } catch (e) {
+                    name = favUrl.substring(0, 30) + '...';
+                }
+            }
 
             const item = document.createElement('div');
             item.className = 'station-item';
