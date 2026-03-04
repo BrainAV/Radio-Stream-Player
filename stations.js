@@ -1,4 +1,5 @@
 export const stations = [
+    { name: "CIDC Z103.5 FM", url: "https://buf-streamb1-ais-relay1.streamb.live/SB00222/playlist.m3u8", genre: "Top 40", country: "Canada" },
     { name: "ETN-FM Trance", url: "https://stream.pcradio.ru/etnfm_trance-hi", genre: "Trance", country: "Canada" },
     { name: "Psyndora Psytrance", url: "https://cast.magicstreams.gr/sc/psyndora/stream", genre: "Psytrance", country: "Greece" },
     { name: "DMT-FM", url: "https://dc1.serverse.com/proxy/ywycfrxn/stream", genre: "Psytrance", country: "UK" },
