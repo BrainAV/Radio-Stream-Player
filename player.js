@@ -160,6 +160,65 @@ export function initPlayer(state) {
 
     // NOTE: updateMediaSession() will be called by updateNowPlaying() / fetchMetadata()
 
+    // Audio Element Event Listeners (Auto-Reconnect Logic)
+    let reconnectTimeout = null;
+
+    function handleStreamDrop() {
+        if (!state.isPlaying) return; // Ignore drops if we manually paused
+
+        if (nowPlayingTrack) {
+            nowPlayingTrack.textContent = "Reconnecting...";
+            nowPlayingTrack.classList.remove('marquee-active');
+        }
+
+        if (reconnectTimeout) clearTimeout(reconnectTimeout);
+
+        console.log("Stream dropped. Attempting to reconnect in 3 seconds...");
+        reconnectTimeout = setTimeout(() => {
+            if (state.isPlaying) {
+                console.log("Reconnecting...");
+                audio.src = getProxiedAudioUrl(stationSelect.value);
+                audio.load();
+                audio.play().catch(err => {
+                    console.error('Reconnect failed:', err);
+                    if (nowPlayingTrack) nowPlayingTrack.textContent = 'Reconnect failed. Retry play.';
+                    state.isPlaying = false;
+                    updatePlayPauseIcon(false);
+                });
+            }
+        }, 3000);
+    }
+
+    audio.addEventListener('error', (e) => {
+        console.error('Audio playback error:', audio.error);
+        handleStreamDrop();
+    });
+
+    audio.addEventListener('ended', () => {
+        console.warn('Audio stream ended unexpectedly.');
+        handleStreamDrop();
+    });
+
+    audio.addEventListener('stalled', () => {
+        console.warn('Audio stream stalled. Browser is attempting to buffer...');
+        // We generally let the browser handle brief network stalls. 
+        // If it fully fails, it will emit an 'error' or 'ended' event.
+    });
+
+    audio.addEventListener('playing', () => {
+        // If we successfully reconnected, clear any pending timeouts
+        if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+            reconnectTimeout = null;
+        }
+
+        // Restore appropriate Now Playing text if we just recovered
+        if (state.isPlaying && nowPlayingTrack && (nowPlayingTrack.textContent === "Reconnecting..." || nowPlayingTrack.textContent.includes("Reconnect failed"))) {
+            // Force a fresh fetch of metadata to update the UI
+            fetchMetadata(stationSelect.value);
+        }
+    });
+
     // Event Listeners
     playPauseBtn.addEventListener('click', () => {
         if (state.isPlaying) {

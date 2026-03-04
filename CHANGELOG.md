@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   **Custom Stations:** Created a new "My Stations" tab in the Settings modal. It now includes a dedicated UI to manage and delete "Favorite" stations alongside custom URLs.
 -   **UI/UX:** Organized the Settings modal into a tabbed interface ("General", "My Stations", "Directory") to improve usability and reduce vertical scrolling.
 
+### Fixed
+-   **Playback:** Implemented robust auto-reconnect logic. Long-running streams or network drops will no longer silently freeze the player; the audio element will now automatically detect unexpected disconnects and seamlessly restart the stream buffer in the background without requiring user interaction.
 ---
 
 ## [1.2.1] - 2026-03-02
