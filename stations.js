@@ -5,10 +5,8 @@ export const stations = [
     { name: "DMT-FM", url: "https://dc1.serverse.com/proxy/ywycfrxn/stream", genre: "Psytrance", country: "UK" },
     { name: "BOM Psytrance Radio", url: "https://strm112.1.fm/psytrance_mobile_mp3?aw_0_req.gdpr=true", genre: "Psytrance", country: "Switzerland" },
     { name: "Melodic House Radio", url: "https://stream1-technolovers.radiohost.de/melodic-house-techno", genre: "Melodic House", country: "Germany" },
-    { name: "psyradio * fm - progressive", url: "http://65.109.32.21:8010/stream", genre: "Progressive Psy", country: "Germany" },
     { name: "Party~Vibe | Psychedelic Trance Radio", url: "https://www.partyvibe.com:8062/;listen.pls?sid=1", genre: "Psytrance", country: "UK" },
     { name: "Radiozora - Psytrance", url: "https://trance.out.airtime.pro/trance_a", genre: "Psytrance", country: "Hungary" },
-    { name: "A State of Trance (ASOT)", url: "https://streaming.radio.co/s0cf4c8c63/listen", genre: "Trance", country: "Netherlands" },
     { name: "Hirsch Radio Psytrance", url: "https://hirschmilch.de:7501/psytrance.mp3", genre: "Psytrance", country: "Germany" },
     { name: "Hirsch Radio Progressive", url: "https://hirschmilch.de:7501/progressive.mp3", genre: "Progressive", country: "Germany" }
 ];
