@@ -32,6 +32,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     transition: background-color 0.3s, color 0.3s;
+    /* Safe area insets for notched/island devices (iPhone X+) */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .main-content {
@@ -92,7 +94,7 @@ body {
     padding: 25px;
     width: 90%;
     max-width: 600px;
-    min-width: 400px;
+    min-width: 0;
     margin: 0 auto;
     color: var(--text-color);
     /* This will be overridden by dark theme if active */
@@ -632,19 +634,65 @@ body {
     height: 16px;
 }
 
-/* Mobile Responsive Styles */
-@media (max-width: 500px) {
+/* ============================================
+   Tablet Responsive Styles (≤ 768px)
+   ============================================ */
+@media (max-width: 768px) {
     .radiostream-player {
-        flex-direction: column;
         padding: 20px;
-        min-width: 300px;
+        width: 95%;
     }
 
+    .console-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    #favorite-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* ============================================
+   Mobile Responsive Styles (≤ 500px)
+   ============================================ */
+@media (max-width: 500px) {
+
+    /* --- Player Card Layout --- */
+    .radiostream-player {
+        flex-direction: column;
+        padding: 16px;
+        min-width: 0;
+        width: calc(100% - 24px);
+        gap: 12px;
+    }
+
+    .player-content {
+        gap: 10px;
+    }
+
+    .main-content {
+        padding: 12px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    /* --- Header --- */
+    .tool-header {
+        padding: 8px 16px;
+    }
+
+    .tool-header h2 {
+        font-size: 1.05rem;
+    }
+
+    /* --- VU Meters (horizontal on mobile) --- */
     .vu-meters {
         flex-direction: row;
         width: 100%;
         justify-content: center;
-        height: 60px;
+        height: 50px;
     }
 
     /* Mobile Classic Style */
@@ -691,7 +739,7 @@ body {
     /* Mobile Waveform Style */
     .vu-waveform .vu-meters {
         width: 100%;
-        gap: 30px;
+        gap: 20px;
     }
 
     .vu-waveform .vu-meter {
@@ -702,7 +750,7 @@ body {
     /* Mobile Spectrum Style */
     .vu-spectrum .vu-meters {
         width: 100%;
-        gap: 30px;
+        gap: 20px;
     }
 
     .vu-spectrum .vu-meter {
@@ -751,13 +799,144 @@ body {
         left: 0;
     }
 
-    .station-selector label,
-    .volume-control label {
-        font-size: 1em;
+    /* --- Control Bar: Stacked Layout --- */
+    .control-bar {
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
-    .now-playing {
-        font-size: 1em;
+    /* Station selector takes full width (row 1) */
+    .station-selector {
+        width: 100%;
+        order: 1;
+    }
+
+    .station-selector select {
+        font-size: 0.95rem;
+        padding: 12px 10px;
+    }
+
+    /* Play button */
+    #play-pause-btn {
+        order: 2;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px;
+    }
+
+    /* Volume slider expands to fill remaining space (row 2) */
+    .volume-control {
+        order: 3;
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .volume-control input[type="range"] {
+        height: 8px;
+    }
+
+    .volume-control input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+        margin-top: -8px;
+    }
+
+    .volume-control input[type="range"]::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Favorite button: larger touch target */
+    #favorite-btn {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px;
+    }
+
+    /* Hide popout button — not useful on mobile browsers */
+    #popout-btn {
+        display: none;
+    }
+
+    /* All icon buttons: enforce minimum touch target */
+    .console-btn {
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    /* --- Now Playing --- */
+    .now-playing-container {
+        padding: 8px 12px;
+    }
+
+    .now-playing-track {
+        font-size: 1.05em;
+    }
+
+    .now-playing-label {
+        font-size: 0.75em;
+    }
+
+    /* --- Settings Modal: Bottom Sheet --- */
+    .settings-modal {
+        align-items: flex-end;
+    }
+
+    .settings-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        padding: 16px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+        animation: slideUp 0.3s ease-out;
+    }
+
+    /* Settings tabs: larger tap targets */
+    .settings-tab-btn {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        flex: 1;
+        text-align: center;
+    }
+
+    .settings-tabs {
+        gap: 2px;
+    }
+
+    /* Directory search: stack vertically */
+    .directory-search-container {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .directory-search-container #rb-search-by {
+        flex: none !important;
+        width: 100%;
+    }
+
+    .directory-search-container #rb-search-input {
+        width: 100%;
+    }
+
+    .directory-search-container #rb-search-btn {
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    /* Background presets already handled below */
+}
+
+/* Bottom sheet slide-up animation for mobile settings */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
