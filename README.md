@@ -11,7 +11,8 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 
 **[🔴 Live Demo](https://radio.djay.ca/)**
 
-*Note: The live demo is now securely hosted via HTTPS! It utilizes a custom Cloudflare Worker proxy (`api.djay.ca`) to seamlessly tunnel legacy HTTP radio streams and extract track metadata without browser security warnings.*
+> [!NOTE]
+> The live demo is securely hosted via HTTPS! It utilizes a custom Cloudflare Worker proxy (`api.djay.ca`) to seamlessly tunnel legacy HTTP radio streams and extract real-time track metadata without triggering browser security warnings.
 
 ## ✨ Features
 
@@ -44,6 +45,20 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 - **CSS3**: For styling, including custom properties for theming and responsive design.
 - **Vanilla JavaScript (ES6+)**: For all player logic, interactivity, and state management.
 - **Web Audio API**: For audio processing and creating the dynamic visualizations.
+
+## 🔌 Powered By
+
+- **[Cloudflare Workers](https://workers.cloudflare.com/)**: Enables our secure backend streaming proxy and ICY metadata extraction.
+- **[Radio Browser API](https://www.radio-browser.info/)**: Provides the massive, community-driven database of global radio stations available natively in the app directory.
+
+## ⌨️ Keyboard Shortcuts
+
+The player is designed to be fully accessible and keyboard-friendly:
+
+- **`Spacebar` / `Play/Pause Media Key`**: Toggle Play/Pause.
+- **`Next Track Media Key`**: Skips to the next station in the current list.
+- **`Previous Track Media Key`**: Skips to the previous station in the current list.
+- **`Tab`**: Standard browser focus navigation through all UI elements.
 
 ## 🚀 Getting Started
 
