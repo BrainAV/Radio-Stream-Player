@@ -16,6 +16,8 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 ## ✨ Features
 
 - **Multiple Stations**: Comes pre-loaded with a selection of high-quality electronic music radio streams.
+- **Radio Browser Directory**: Integrated public API to natively search and add tens of thousands of community-driven radio stations.
+- **Custom Stations**: Add your own radio stream URLs. Manage your private collection and "Favorites" in a dedicated UI.
 - **Dynamic Audio Visualization**: Real-time VU meters powered by the Web Audio API.
 - **Multiple VU Meter Styles**: Cycle through six different visualizer styles:
   - Classic (Vertical Bars)

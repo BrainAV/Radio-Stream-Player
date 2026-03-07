@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.3.0] - 2026-03-07
+
 ### Added
 -   **Directory:** Integrated the public Radio Browser API, allowing users to search and add tens of thousands of community-driven radio stations natively from the Settings modal.
 -   **Custom Stations:** Created a new "My Stations" tab in the Settings modal. It now includes a dedicated UI to manage and delete "Favorite" stations alongside custom URLs.

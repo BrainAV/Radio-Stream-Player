@@ -26,9 +26,9 @@ This document outlines the future direction and planned features for the Radio S
 
 *These goals focus on adding significant new user-facing features.*
 
--   **[ ] UI/UX Enhancements:**
+-   **[x] UI/UX Enhancements:**
     -   **[x]** Redesign the header to reduce its vertical height, improving usability on smaller screens and mobile devices.
-    -   **[ ]** Modernize the player's look and feel with an updated visual design:
+    -   **[x]** Modernize the player's look and feel with an updated visual design:
         -   **[x]** Implement a "Glassmorphism" (frosted glass) effect for the main player card.
         -   **[x]** Replace text-based controls (Play/Pause, Pop-out) with modern SVG icons.
         -   **[x]** Redesign the volume slider for a more modern appearance.
@@ -52,11 +52,11 @@ This document outlines the future direction and planned features for the Radio S
 -   **[x] Stream Metadata Display:**
     -   **[x]** Leverage the Cloudflare Worker proxy (`api.djay.ca`) to parse ICY metadata headers from the stream without causing audio artifacts in the frontend.
     -   **[x]** Implement frontend polling (`player.js`) and UI updates (scrolling marquee) to display the currently playing song and artist.
--   **[ ] Radio Browser Directory Integration:**
-    -   **[ ]** Add a searchable directory using the `radio-browser.info` public API.
-    -   **[ ]** Build a UI in the Settings modal (or a new panel) to search by tag, name, or country.
-    -   **[ ]** Leverage the existing Cloudflare Proxy natively to tunnel any `http://` streams returned by the API securely. 
-    -   **[ ]** Allow users to easily add searched stations to their "Custom Stations" or "Favorites".
+-   **[x] Radio Browser Directory Integration:**
+    -   **[x]** Add a searchable directory using the `radio-browser.info` public API.
+    -   **[x]** Build a UI in the Settings modal (or a new panel) to search by tag, name, or country.
+    -   **[x]** Leverage the existing Cloudflare Proxy natively to tunnel any `http://` streams returned by the API securely. 
+    -   **[x]** Allow users to easily add searched stations to their "Custom Stations" or "Favorites".
 
 ---
 

@@ -40,18 +40,8 @@ This file is your **Command Center**. It contains the "Magic Spells" (Prompts) t
 > "You are Gemini Code Assist, a world-class software engineering assistant. We are building a 'Radio Stream Player' web application.
 > **Architecture:** Vanilla JavaScript (ES6+), HTML5, CSS3, Web Audio API.
 > **Structure:** Modular JS (`player.js`, `visualizer.js`, `stations.js`).
-> **Current Goal:** We are finalizing Mid-Term Goals (v1.2) and preparing for Long-Term Goals (v2.0) from the `ROADMAP.md`.
+> **Current Goal:** We have completed v1.3.0 and are starting on Long-Term Goals (v2.0+) from the `ROADMAP.md` (specifically advanced state management).
 > **Style:** Clean, accessible, well-commented, and performant code."
----
-
-## 🚀 Mid-Term Goals (v1.2)
-
-### 1. Stream Metadata
-> "Let's investigate displaying the currently playing song/artist. This is a research-heavy task.
-> 1. Research how to access ICY (Icy-MetaData) headers from a stream URL using JavaScript.
-> 2. Determine if a server-side proxy is necessary to bypass CORS limitations.
-> 3. If possible with frontend-only code, let's try to implement a proof-of-concept to fetch and display the metadata in the 'Now Playing' area."
-
 ---
 
 ## 🔭 Long-Term Goals (v2.0+)
