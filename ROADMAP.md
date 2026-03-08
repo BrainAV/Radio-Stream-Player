@@ -57,6 +57,9 @@ This document outlines the future direction and planned features for the Radio S
     -   **[x]** Build a UI in the Settings modal (or a new panel) to search by tag, name, or country.
     -   **[x]** Leverage the existing Cloudflare Proxy natively to tunnel any `http://` streams returned by the API securely. 
     -   **[x]** Allow users to easily add searched stations to their "Custom Stations" or "Favorites".
+-   **[ ] Monetization:**
+    -   **[ ]** Add placeholder ads to the player UI to draft layout and test responsiveness gracefully with the "Glassmorphism" aesthetic.
+    -   **[ ]** Integrate Google AdSense to capitalize on high session durations while users leave the player open.
 
 ---
 
