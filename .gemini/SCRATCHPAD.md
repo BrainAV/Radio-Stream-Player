@@ -12,16 +12,16 @@ Use this file for:
 **Goal:** Refactor the global `radioStreamState` object into a more robust `StateManager` class with a pub/sub system.
 
 ### 🧠 Phase 1: StateManager Class Setup
-- [ ] Create a new `state.js` file.
-- [ ] Implement the `StateManager` class with `#state`, `#subscribers`.
-- [ ] Create `subscribe(callback)` and `#notify()` methods.
-- [ ] Create public getter/setter methods for all existing state properties.
+- [x] Create a new `state.js` file.
+- [x] Implement the `StateManager` class with `#state`, `#subscribers`.
+- [x] Create `subscribe(callback)` and `#notify()` methods.
+- [x] Create public getter/setter methods for all existing state properties.
 
 ### 🔌 Phase 2: Module Refactoring
-- [ ] Refactor `player.js` to route state changes through `stateManager` setters.
-- [ ] Refactor `visualizer.js` to read from the new state class.
-- [ ] Refactor `settings.js` to use `stateManager`.
-- [ ] Refactor UI updates to use `stateManager.subscribe()` callbacks instead of manual DOM updates where applicable.
+- [x] Refactor `player.js` to route state changes through `stateManager` setters.
+- [x] Refactor `visualizer.js` to read from the new state class.
+- [x] Refactor `settings.js` to use `stateManager`.
+- [x] Refactor UI updates to use `stateManager.subscribe()` callbacks instead of manual DOM updates where applicable.
 
 ---
 

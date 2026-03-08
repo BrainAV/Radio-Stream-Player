@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.4.0] - 2026-03-07
+
 ### Added (Development & Tooling)
 -   **Agent Skills framework:** Introduced a `.agent/skills/` directory to establish explicit, file-based instructions for AI coding assistants (like myself). These `SKILL.md` files act as "personas" to maintain consistency across the codebase without needing massive context prompts.
     -   `station-curator`: Guides the AI to strictly validate, format, and structure new stream URLs according to the exact schema expected by `stations.js` (`name`, `url`, `genre`, `country`), preventing frontend breakages.
