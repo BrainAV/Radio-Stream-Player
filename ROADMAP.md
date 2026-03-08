@@ -100,9 +100,14 @@ This document outlines the future direction and planned features for the Radio S
     -   **Community Features:**
         -   Store user-submitted station suggestions in the database for review.
         -   Log broken stream reports to an admin dashboard.
-    -   **Database Schema:** Plan for a robust schema including:
+    -   **[ ] Station Management & Evolution:**
+    -   **[ ]** Transition from hardcoded `stations.js` to a dynamic SQL database backend.
+    -   **[ ]** Repurpose `stations.js` as a dedicated configuration for "Sponsored" or promoted stations.
+    -   **[ ]** Consolidate all station sources (Custom, Directory, Default) into a single, unified database schema.
+    -   **[ ]** Update directory source links to resolve temporary "Custom" handling for legacy streams (e.g., CIDC).
+-   **[ ] Database Schema:** Plan for a robust schema including:
         -   `Station ID`
         -   `Genre` (Categorization)
         -   `Country of Origin`
         -   `Bitrate/Format`
-    -   **Search & Filtering:** Implement a search bar and filter controls (by Genre/Country) to easily find stations within the larger database.
+-   **[ ] Search & Filtering:** Implement a search bar and filter controls (by Genre/Country) to easily find stations within the larger database.
