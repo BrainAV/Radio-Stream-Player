@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (Development & Tooling)
+-   **Agent Skills framework:** Introduced a `.agent/skills/` directory to establish explicit, file-based instructions for AI coding assistants (like myself). These `SKILL.md` files act as "personas" to maintain consistency across the codebase without needing massive context prompts.
+    -   `station-curator`: Guides the AI to strictly validate, format, and structure new stream URLs according to the exact schema expected by `stations.js` (`name`, `url`, `genre`, `country`), preventing frontend breakages.
+    -   `ui-consistency`: Enforces the project's signature "Glassmorphism" aesthetic. It instructs the AI to reuse existing CSS variables, specific blur values, responsive breakpoints, and accessibility standards whenever modifying `styles.css` or HTML components.
+    -   `state-architect`: Enforces the Pub/Sub state management pattern.
+    -   `a11y-auditor`: Guarantees accessibility standards.
+    -   `audio-engineer`: Provides Web Audio API best practices.
+    -   `release-manager`: Automates the Changelog and version-bumping workflows.
+
+### Changed (v2.0 Architecture Refactor)
+-   **Advanced State Management (The "Modern Restaurant" Refactor):**
+    -   Replaced the chaotic global `window.radioStreamState` object with a centralized `StateManager` (Pub/Sub pattern) class in `state.js`.
+    -   Decoupled DOM updating logic from click event listeners. UI components (like the Play button, Volume Slider, and Visualizer) now automatically re-render by *subscribing* to state mutations rather than polling or triggering each other manually.
+    -   Fixed visualizer behavior where changing styles while paused caused the UI to completely disappear.
+
+### Fixed
+-   Fixed a bug where assigning a non-integer value to the visualizer style in `localStorage` caused the Settings dropdown to go completely blank.
+
 ---
 
 ## [1.3.0] - 2026-03-07

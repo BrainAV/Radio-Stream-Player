@@ -2,33 +2,33 @@ export const VU_STYLES = [
     'classic', 'led', 'circular', 'waveform', 'spectrum', 'retro', 'neon'
 ];
 
-let state;
+import { stateManager } from './state.js';
+
 let leftVu, rightVu, vuMeters;
 let analyserLeft, analyserRight;
 let dataArrayLeft, dataArrayRight, frequencyDataLeft, frequencyDataRight;
 
-export function initVisualizer(appState, audioContext, source) {
-    state = appState;
-
+export function initVisualizer() {
+    const state = stateManager.getState();
+    
     // Get DOM elements
     leftVu = document.getElementById('left-vu');
     rightVu = document.getElementById('right-vu');
     vuMeters = document.querySelector('.vu-meters');
 
     // Create and connect analyser nodes
-    const splitter = audioContext.createChannelSplitter(2);
-    analyserLeft = audioContext.createAnalyser();
-    analyserRight = audioContext.createAnalyser();
+    const splitter = state.audioContext.createChannelSplitter(2);
+    analyserLeft = state.audioContext.createAnalyser();
+    analyserRight = state.audioContext.createAnalyser();
     analyserLeft.fftSize = 1024;
     analyserRight.fftSize = 1024;
 
-    source.connect(splitter);
+    state.source.connect(splitter);
     splitter.connect(analyserLeft, 0);
     splitter.connect(analyserRight, 1);
 
-    // Store analysers in state for other modules if needed
-    state.analyserLeft = analyserLeft;
-    state.analyserRight = analyserRight;
+    // Store analysers back into state for potential future use by other modules
+    stateManager.setAudioInfrastructure(state.audio, state.audioContext, state.source, analyserLeft, analyserRight);
 
     // Prepare data arrays
     const bufferLength = analyserLeft.frequencyBinCount;
@@ -37,27 +37,28 @@ export function initVisualizer(appState, audioContext, source) {
     frequencyDataLeft = new Uint8Array(bufferLength);
     frequencyDataRight = new Uint8Array(bufferLength);
 
-    // Load saved style preference
-    const savedStyle = localStorage.getItem('vuStyle');
-    if (savedStyle !== null) {
-        state.vuStyle = parseInt(savedStyle, 10);
-    }
-
     // Initial setup
-    updateVuStyle();
+    updateVuStyle(stateManager.getState().vuStyle);
     updateVUMeters();
+    
+    // React to state changes
+    stateManager.subscribe((newState, oldState) => {
+        if (newState.vuStyle !== oldState.vuStyle) {
+            updateVuStyle(newState.vuStyle);
+            if (!newState.isPlaying) {
+                 resetVuMeters(newState.vuStyle);
+            }
+        }
+        
+        // If playback stops, reset the meters
+        if (!newState.isPlaying && oldState.isPlaying) {
+            resetVuMeters(newState.vuStyle);
+        }
+    });
 }
 
-export function setVuStyle(index) {
-    if (state && index >= 0 && index < VU_STYLES.length) {
-        state.vuStyle = index;
-        localStorage.setItem('vuStyle', index);
-        updateVuStyle();
-    }
-}
-
-function updateVuStyle() {
-    const currentStyle = VU_STYLES[state.vuStyle];
+function updateVuStyle(vuStyleIndex) {
+    const currentStyle = VU_STYLES[vuStyleIndex];
     vuMeters.className = `vu-meters vu-${currentStyle}`;
 
     // Clear existing content and rebuild based on style
@@ -190,10 +191,13 @@ function createNeonVu(container, channel) {
 }
 
 function updateVUMeters() {
-    state.animationFrameId = requestAnimationFrame(updateVUMeters);
+    const reqId = requestAnimationFrame(updateVUMeters);
+    stateManager.setAnimationFrameId(reqId);
 
-    if (!state.isPlaying) {
-        resetVuMeters();
+    const state = stateManager.getState();
+
+    // If analyser nodes haven't been setup yet or we are paused, abort loop execution
+    if (!analyserLeft || !analyserRight || !state.isPlaying) {
         return;
     }
 
@@ -369,9 +373,9 @@ function updateNeonVu(levelLeft, levelRight) {
     updateChannel('right-neon-level', levelRight);
 }
 
-function resetVuMeters() {
+function resetVuMeters(vuStyleIndex) {
     const isMobile = window.innerWidth <= 500;
-    const currentStyle = VU_STYLES[state.vuStyle];
+    const currentStyle = VU_STYLES[vuStyleIndex];
     switch (currentStyle) {
         case 'classic':
             document.querySelectorAll('.vu-level').forEach(level => {
@@ -406,6 +410,25 @@ function resetVuMeters() {
                     level.style.height = '0%';
                 }
                 level.style.boxShadow = 'none';
+            });
+            break;
+        case 'spectrum':
+            document.querySelectorAll('.spectrum-bar').forEach(bar => {
+                bar.style.height = '0%';
+            });
+            break;
+        case 'waveform':
+            document.querySelectorAll('.waveform-canvas').forEach(canvas => {
+                const ctx = canvas.getContext('2d');
+                const { width, height } = canvas;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--console-bg') || '#000';
+                ctx.fillRect(0, 0, width, height);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#00ff00';
+                ctx.beginPath();
+                ctx.moveTo(width / 2, 0);
+                ctx.lineTo(width / 2, height);
+                ctx.stroke();
             });
             break;
     }

@@ -1,5 +1,6 @@
-import { VU_STYLES, setVuStyle } from './visualizer.js';
+import { VU_STYLES } from './visualizer.js';
 import { stations as defaultStations } from './stations.js';
+import { stateManager } from './state.js';
 
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
@@ -23,9 +24,9 @@ const favoriteBtn = document.getElementById('favorite-btn');
 function initSettings() {
     // Populate VU Style Dropdown
     if (vuStyleSelect) {
-        VU_STYLES.forEach((style, index) => {
+        VU_STYLES.forEach((style) => {
             const option = document.createElement('option');
-            option.value = index;
+            option.value = style; // use the string name (e.g. 'neon')
             option.textContent = style.charAt(0).toUpperCase() + style.slice(1);
             vuStyleSelect.appendChild(option);
         });
@@ -33,15 +34,28 @@ function initSettings() {
         // Set initial value from localStorage or default
         const savedStyle = localStorage.getItem('vuStyle');
         if (savedStyle !== null) {
-            vuStyleSelect.value = savedStyle;
+            // Handle backwards compatibility where savedStyle might be an integer "1"
+            const numStyle = parseInt(savedStyle, 10);
+            if (!isNaN(numStyle) && numStyle >= 0 && numStyle < VU_STYLES.length) {
+                vuStyleSelect.value = VU_STYLES[numStyle];
+            } else if (VU_STYLES.includes(savedStyle)) {
+                vuStyleSelect.value = savedStyle;
+            } else {
+                vuStyleSelect.value = VU_STYLES[0];
+            }
         } else {
-            vuStyleSelect.value = 0;
+            vuStyleSelect.value = VU_STYLES[1]; // LED as default
         }
 
         // Change Listener
         vuStyleSelect.addEventListener('change', (e) => {
-            const index = parseInt(e.target.value, 10);
-            setVuStyle(index);
+            const selectedStyleName = e.target.value;
+            const index = VU_STYLES.indexOf(selectedStyleName);
+            if (index !== -1) {
+                // Save the string to localStorage for robustness
+                localStorage.setItem('vuStyle', selectedStyleName);
+                stateManager.setVuStyle(index);
+            }
         });
     }
 

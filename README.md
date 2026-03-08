@@ -43,7 +43,7 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 
 - **HTML5**: For the structure of the player.
 - **CSS3**: For styling, including custom properties for theming and responsive design.
-- **Vanilla JavaScript (ES6+)**: For all player logic, interactivity, and state management.
+- **Vanilla JavaScript (ES6+)**: For all player logic, interactivity, and a robust Pub/Sub State Manager to ensure perfect UI synchronization.
 - **Web Audio API**: For audio processing and creating the dynamic visualizations.
 
 ## 🔌 Powered By

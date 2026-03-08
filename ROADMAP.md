@@ -60,12 +60,29 @@ This document outlines the future direction and planned features for the Radio S
 
 ---
 
+## 🤖 Agent Tooling & Workflow (v1.4+)
+
+*These goals focus on enhancing the AI assistant's context and capabilities through explicit `SKILL.md` personas, resulting in "easy wins" and consistent development.*
+
+-   **[x] Initial Skill Foundation:**
+    -   **[x]** Implement `.agent/skills` directory architecture.
+    -   **[x]** Create `station-curator` skill for automated stream validation.
+    -   **[x]** Create `ui-consistency` skill to enforce Glassmorphism tokens.
+-   **[x] Specialized Development Personas:**
+    -   **[x] `audio-engineer`:** A skill dedicated to Web Audio API best practices, preventing memory leaks and managing audio graph connections effectively.
+    -   **[x] `a11y-auditor`:** A skill used alongside new UI development to guarantee accessibility standards, keyboard focus paths, and ARIA labels.
+    -   **[x] `release-manager`:** A workflow automation skill that dictates exactly how to bump versions, format release notes, and update the changelog.
+
+---
+
 ## 🔭 Long-Term Goals (v2.0+)
 
 *These are major architectural changes and features that would represent a significant evolution of the project.*
 
--   **[ ] Advanced State Management:**
-    -   Refactor the simple global `radioStreamState` object into a more robust state management pattern (e.g., a class-based service or a small pub/sub library) to better handle application complexity.
+-   **[x] Advanced State Management:**
+    -   Refactored the simple global `radioStreamState` object into a more robust state management pattern (class-based `StateManager` pub/sub) to better handle application complexity.
+-   **[ ] UI/UX Design Improvements:**
+    -   Implement VU meter rotation to landscape mode (currently portrait-oriented).
 -   **[ ] Build Process Integration:**
     -   Introduce a modern build tool like Vite or Parcel to enable features like ES modules, CSS pre-processing, and code minification for production builds.
 -   **[x] Backend Service (Cloudflare Worker Proxy):**
