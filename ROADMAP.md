@@ -94,6 +94,7 @@ This document outlines the future direction and planned features for the Radio S
     -   **[x] Metadata:** Extended the worker with a `/metadata` endpoint to parse ICY metadata server-side, avoiding CORS issues and audio decoding artifacts in the browser.
 -   **[ ] Migration to Self-Hosted Backend (PHP/SQL):**
     -   Migrate away from static GitHub Pages hosting to a full LAMP/LEMP stack environment.
+    -   **Repository Strategy:** To maintain a clean, dependency-free version for users, this repository will remain **HTML-only**. A new, separate repository (e.g., `Radio-Stream-Player-PHP`) will be created for the full-stack solution.
     -   **Goal:** Enable advanced features like user accounts, server-side playlist management, and a robust API.
     -   **Implementation:** Develop a PHP backend with a MySQL/MariaDB database to store stations, user preferences, and analytics.
     -   **File Uploads:** Allow users to upload custom background images (e.g., WebP) instead of just providing URLs.
