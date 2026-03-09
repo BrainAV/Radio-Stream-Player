@@ -1,6 +1,7 @@
-# Developer Guide: Radio Stream Player
+# Developer Guide: Radio Stream Player (Legacy)
 
-Welcome to the developer guide for the Radio Stream Player. This document is intended for developers and AI assistants who want to understand, maintain, or contribute to the project.
+> [!IMPORTANT]
+> **This version of the project is now Legacy.** Active development has moved to the [Radio-Stream-Player-PHP](https://github.com/BrainAV/Radio-Stream-Player-PHP) repository. This document serves as the technical guide for the final standalone version.
 
 ## 1. Project Overview
 
@@ -18,7 +19,8 @@ The project consists of a few key files:
 - `index.html`: The main entry point and structure for the application. It contains the player UI, station list, and control buttons.
 - `popout.html`: A minimal version of the UI for the pop-out player window. It communicates with the main window via `postMessage`.
 - `stations.js`: A simple ES module that exports the array of default radio stations.
-- `player.js`: An ES module that handles all core player logic, including audio playback, UI controls (play, volume, station select), and state management.
+- `state.js`: A centralized Pub/Sub `StateManager` class that manages all application state and triggers UI updates.
+- `player.js`: An ES module that handles all core player logic, including audio playback, UI controls (play, volume, station select), and interacting with the state manager.
 - `visualizer.js`: An ES module responsible for all Web Audio API analysis, canvas/DOM drawing, and VU meter style logic.
 - `styles.css`: Contains all styling for the application, including layout, theming (light/dark modes), and the appearance of all VU meter styles.
 - `script.js`: The main entry point. It imports the other modules (`player.js`, `visualizer.js`) and initializes the application.
@@ -30,56 +32,14 @@ The project consists of a few key files:
 
 ## 3. Core Architecture & Concepts
 
-### 3.1. Global State Management (`radioStreamState`)
+### 3.1. Centralized State Management (`StateManager`)
 
-To manage state across different contexts (main window vs. pop-out) and to persist state if the script were re-initialized, a single global object `radioStreamState` is attached to the `window` object. It is defined and exported from `player.js`.
+In version 1.4.0+, the player moved from a simple global object to a robust, class-based `StateManager` found in `state.js`. 
 
-```javascript
-const radioStreamState = window.radioStreamState || {
-    audio: null,
-    isPlaying: false,
-    currentStation: null,
-    volume: 0.5,
-    audioContext: null,
-    // ... other audio nodes
-    vuStyle: 1
-};
-window.radioStreamState = radioStreamState;
-```
+- **Encapsulation**: The state is held privately within the `StateManager` class.
+- **Controlled Mutations**: Public methods like `setPlaying(status)` and `setVolume(level)` are the only ways to modify the state.
+- **Reactivity (Pub/Sub)**: Modules can call `subscribe(callback)` to listen for state changes. When state changes, all registered subscribers are notified, allowing the UI to react instantly and stay in sync regardless of whether changes originated from the main window or settings modal.
 
-- **Purpose**: It acts as a singleton, holding all critical application state like the current station, volume, playback status, and references to the `AudioContext` and its nodes.
-- **Limitation**: This is a simple approach. For larger applications, this could become difficult to manage. Future work could involve refactoring this into a more robust state management pattern (e.g., a class-based service or a pub/sub model).
-
-### 3.1.1. Future Refactoring Plan: Class-Based State Service
-
-To address the limitations of the global state object and align with the long-term roadmap, the state management will be upgraded to a class-based service. This will improve encapsulation, scalability, and maintainability.
-
-**Key Concepts:**
-
-1.  **Encapsulation**: The state will be held privately within a `StateManager` class. Direct mutation from outside the class will be prevented.
-2.  **Controlled Mutations**: The class will expose public methods (e.g., `setPlaying(status)`, `setVolume(level)`) as the only way to modify the state. This creates a single, predictable source of truth for state changes.
-3.  **Reactivity (Pub/Sub)**: The `StateManager` will implement a simple publish-subscribe pattern.
-    -   A `subscribe(callback)` method will allow different modules (like the UI) to listen for state changes.
-    -   When the state is modified via a setter method, a private `notify()` method will be called, which in turn executes all registered subscriber callbacks.
-
-**Implementation Steps:**
-
-1.  **Create `state.js`**: A new file will house the `StateManager` class. A single, shared instance (singleton) of this class will be created and exported.
-
-    ```javascript
-    // Example structure for state.js
-    class StateManager {
-        #state;
-        #subscribers;
-        // ... constructor, getters, setters, subscribe, notify
-    }
-    export const stateManager = new StateManager({ /* initial state */ });
-    ```
-
-2.  **Refactor Modules**:
-    -   In `player.js`, `visualizer.js`, and `script.js`, replace the import and use of the global `radioStreamState` with the new `stateManager` instance.
-    -   Update code that directly modifies state (e.g., `state.isPlaying = true`) to use the new setter methods (e.g., `stateManager.setPlaying(true)`).
-    -   Refactor UI update logic. Instead of manually updating the DOM after every action, the UI components will `subscribe` to the `stateManager`. The subscription callback will receive the new state and update the DOM accordingly, ensuring the UI is always in sync with the state.
 
 ### 3.2. Web Audio API Graph
 

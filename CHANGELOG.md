@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [1.5.0-Legacy] - 2026-03-09
+
+### Changed
+-   **Maintenance Mode**: Marked this repository as Legacy.
+-   **Migration**: Formally transitioned active development to the [Radio-Stream-Player-PHP](https://github.com/BrainAV/Radio-Stream-Player-PHP) repository.
+-   **Documentation**: Updated `README.md`, `ROADMAP.md`, and `DEVELOPER_GUIDE.md` to reflect the legacy status and redirect users to the new full-stack version.
+-   **Scope**: This repository will remain as a minimalist, standalone HTML/JS experiment with no further major feature updates.
+-   **Demo Move**: The legacy v1 demo has been moved to [radio1.djay.ca](http://radio1.djay.ca/). The main [radio.djay.ca](https://radio.djay.ca/) URL now points to the new PHP version.
 
 ---
 
 ## [1.4.0] - 2026-03-07
+
 
 ### Added (Development & Tooling)
 -   **Agent Skills framework:** Introduced a `.agent/skills/` directory to establish explicit, file-based instructions for AI coding assistants (like myself). These `SKILL.md` files act as "personas" to maintain consistency across the codebase without needing massive context prompts.

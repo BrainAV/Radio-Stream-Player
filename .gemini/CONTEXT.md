@@ -2,17 +2,17 @@
 .gemini/PERSONA.md
 </PERSONA_FILE>
 <PROJECT_INFO>
-**Name**: Radio Stream Player
+**Name**: Radio Stream Player (Legacy)
 **Description**: A sleek, modern, and feature-rich web-based radio stream player built with vanilla JavaScript and the Web Audio API.
-**Live URL**: http://radio.djay.ca/
-**Goal**: To provide an elegant, accessible, and feature-rich listening experience with dynamic audio visualizations.
+**Live URL**: http://radio1.djay.ca/
+**Goal**: To maintain this minimalist, standalone HTML/JS version as a portable experiment while new development continues in the PHP-based repository.
 </PROJECT_INFO>
 <TECH_STACK>
 Refer to `DEVELOPER_GUIDE.md` for architecture details.
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6+ Modules)
 - **Core APIs**: Web Audio API
-- **State Management**: Simple global `radioStreamState` object (future goal: refactor to a class-based service).
-- **Build Process**: None (currently a static project, future goal: add Vite/Parcel).
+- **State Management**: Centralized `StateManager` class (Pub/Sub pattern).
+- **Status**: Legacy/Maintenance Mode.
 </TECH_STACK>
 <CODING_CONVENTIONS>
 - **Architecture**: Maintain strict separation of concerns between modules:

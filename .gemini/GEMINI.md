@@ -9,56 +9,27 @@ This file is your **Command Center**. It contains the "Magic Spells" (Prompts) t
 
 ---
 
-## ⚡ Quick Sync & Workflow
+## ⚡ Legacy Maintenance & Workflow
 
-### 1. Start of Session (The "Quick Sync")
-*Use this to instantly load the project context. You just used this!*
-> "Please read all the project context files (`ROADMAP.md`, `README.md`, `CHANGELOG.md`, `DEVELOPER_GUIDE.md`, and the contents of the `.gemini` folder) to get in sync with the current state of the project."
+### 1. Maintenance Sync
+*Use this to load the project's legacy context.*
+> "Please read the project context files to sync with the legacy state. Remember this is a minimalist HTML/JS standalone version."
 
-### 2. Feature Development
-> "Let's implement the '[Feature Name]' feature from the `ROADMAP.md`."
-> "I have an idea for a new feature: '[Description]'. Please add it as a 'To Do' item to the `ROADMAP.md` under the appropriate goal (Mid-Term, Long-Term, etc.)."
+### 2. Maintenance Tasks
+> "Update the stream URL for [Station Name] in `stations.js`."
+> "Fix a bug in the [Visualizer Style] rendering logic."
+> "Ensure the header marquee is responsive on new screen sizes."
 
-### 3. Bug Fixes
-> "I've found a bug: [Describe bug]. Let's work on a fix."
-
-### 4. Documentation
-> "Please update the `CHANGELOG.md` to reflect the recent changes we've made."
-> "Let's review all the documentation files to ensure they are consistent and up-to-date."
-> "Summarize the changes we made in this session for a Git commit message. Follow the Conventional Commits format."
-
-### 5. Release Workflow
-> "Let's prepare release vX.X.X.
-> 1. Update `CHANGELOG.md` by moving [Unreleased] items to [vX.X.X].
-> 2. Create a new file `docs/RELEASE_vX.X.X.md` with a user-friendly summary of the changes.
-> 3. Verify `README.md` is up to date."
+### 3. Documentation
+> "Update the legacy `CHANGELOG.md` to reflect these maintenance fixes."
+> "Confirm that `README.md` still correctly points to the new PHP version."
 
 ---
 
-## 🧠 Manual Context Setter (Fallback)
-*If the Quick Sync doesn't work, paste this:*
-> "You are Gemini Code Assist, a world-class software engineering assistant. We are building a 'Radio Stream Player' web application.
-> **Architecture:** Vanilla JavaScript (ES6+), HTML5, CSS3, Web Audio API.
-> **Structure:** Modular JS (`player.js`, `visualizer.js`, `stations.js`).
-> **Current Goal:** We have completed v1.3.0 and are starting on Long-Term Goals (v2.0+) from the `ROADMAP.md` (specifically advanced state management).
-> **Style:** Clean, accessible, well-commented, and performant code."
----
+## 🌍 The v2.0 Future (PHP/SQL)
 
-## 🔭 Long-Term Goals (v2.0+)
+Development has moved! For any requests involving user accounts, database management, or server-side logic, please direct the user to the **[Radio-Stream-Player-PHP](https://github.com/BrainAV/Radio-Stream-Player-PHP)** repository.
 
-### 1. Advanced State Management
-> "Let's refactor the global `radioStreamState` object into a more robust, class-based state manager as outlined in `DEVELOPER_GUIDE.md`.
-> 1. Create a new `state.js` file.
-> 2. Implement a `StateManager` class with a private state, public getters, and setter methods.
-> 3. Add a simple pub/sub system (`subscribe`, `notify`) to the class.
-> 4. Refactor `player.js`, `visualizer.js`, and `script.js` to import and use the new state manager instance, replacing direct state manipulation with setters and subscriptions."
-
-### 2. Build Process
-> "Let's introduce a build tool like Vite to the project. This will involve:
-> 1. Initializing a new Vite project.
-> 2. Moving our existing `index.html`, `popout.html`, JS, and CSS files into the Vite project structure.
-> 3. Updating our JS to use modern ES module import/export syntax for all files.
-> 4. Configuring Vite to handle our static assets and provide a dev server with hot-reloading."
 
 ---
 

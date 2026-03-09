@@ -1,4 +1,10 @@
-# Radio Stream Player
+# Radio Stream Player (Legacy Version)
+
+> [!IMPORTANT]
+> **This repository is now in Legacy/Maintenance mode.**
+> Development has migrated to the feature-rich **[Radio-Stream-Player-PHP](https://github.com/BrainAV/Radio-Stream-Player-PHP)** which includes user accounts, a database-driven station directory, and a full PHP backend.
+>
+> This version (v1.x) remains available as a **minimalist, zero-backend, standalone HTML/JS experiment**. It is perfect for users who want a simple, portable player without the need for a server or database.
 
 ![GitHub](https://img.shields.io/github/license/BrainAV/Radio-Stream-Player)
 ![GitHub last commit](https://img.shields.io/github/last-commit/BrainAV/Radio-Stream-Player)
@@ -9,10 +15,10 @@ A sleek, modern, and feature-rich web-based radio stream player built with vanil
 
 ![Radio Stream Player Screenshot](docs/images/app-screenshot.webp)
 
-**[🔴 Live Demo](https://radio.djay.ca/)**
+**[🔴 Live Demo (Legacy)](http://radio1.djay.ca/)** | **[🚀 New PHP Version](https://radio.djay.ca/)**
 
-> [!NOTE]
-> The live demo is securely hosted via HTTPS! It utilizes a custom Cloudflare Worker proxy (`api.djay.ca`) to seamlessly tunnel legacy HTTP radio streams and extract real-time track metadata without triggering browser security warnings.
+> The legacy demo is securely hosted at http://radio1.djay.ca/! It utilizes a custom Cloudflare Worker proxy (`api.djay.ca`) to seamlessly tunnel legacy HTTP radio streams and extract real-time track metadata without triggering browser security warnings.
+
 
 ## ✨ Features
 

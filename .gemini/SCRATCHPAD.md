@@ -25,6 +25,10 @@ Use this file for:
 
 ---
 
-## ✅ Completed
-*   **[x] Release v1.3.0:** Radio Browser API, Custom Stations management, Auto-reconnect logic.
-*   **[x] Cloudflare Worker Proxy & Stream Metadata:** Seamlessly handles HTTP -> HTTPS and ICY Metadata.
+## ✅ Completed & Archived
+*   **[x] Release v1.3.0:** Radio Browser API, Custom Stations management.
+*   **[x] v1.4.0 Refactor:** Centralized State Management (Pub/Sub) and Agent Skill framework.
+*   **[x] v1.5.0 Legacy Transition:** Formally marked the repository as Legacy and pointed to the PHP repository.
+
+## 🔒 State: Maintenance Only
+This repository is now a static artifact of the original standalone experiment. No major features are planned.
