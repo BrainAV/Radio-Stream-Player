@@ -29,8 +29,9 @@ export default {
             return new Response("Forbidden: Access restricted to djay.ca domains.", { status: 403 });
         }
 
-        // We echo back the allowed origin for CORS, or default to radio1.djay.ca if missing
-        const corsOrigin = origin || "http://radio1.djay.ca";
+        // We echo back the allowed origin for CORS (supports both radio.djay.ca and radio1.djay.ca)
+        // Defaults to radio.djay.ca if the Origin header is missing.
+        const corsOrigin = origin || "http://radio.djay.ca";
 
         // 2. Handle CORS Preflight Requests (OPTIONS)
         if (request.method === "OPTIONS") {
@@ -191,7 +192,7 @@ export default {
             // Prepare headers for the client
             const responseHeaders = new Headers(response.headers);
 
-            // Add CORS headers so the browser allows the fetch from radio1.djay.ca
+            // Add CORS headers so the browser allows the fetch from radio.djay.ca / radio1.djay.ca
             responseHeaders.set("Access-Control-Allow-Origin", corsOrigin);
             responseHeaders.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
 
